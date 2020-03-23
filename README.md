@@ -1,2 +1,2 @@
 # quizzApp
-QuizzApp selon le jeu du "Grand quizz" des animations
+QuizzApp selon le jeu du "Grand quizz" des animations !!
