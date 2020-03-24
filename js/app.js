@@ -37,7 +37,7 @@ let vm1 = new Vue({
 });
 
 
-let vm = new Vue({
+let vm2 = new Vue({
     el: '#app2',
     data: {
         tabDays: ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi'],
@@ -59,6 +59,51 @@ let vm = new Vue({
     destroyed: function () {
         clearInterval(this.$interval)
     }
+})
+
+
+let vm3 = new Vue({
+    el: '#app3',
+    data: {
+        success: false,
+        message: "",
+        firstName: "Jean",
+        lastName: "Dupont"
+    },
+
+    computed: {
+        cls: function () {
+            console.log("here")
+            return this.success === true ? 'alert-success' : 'alert-danger';
+
+        },
+
+        fullName: function () {
+            return `${this.firstName} ${this.lastName}`;
+        },
+
+        fullNameEdit: {
+            get: function () {
+                return `${this.firstName} ${this.lastName}`;
+            },
+            set: function (value) {
+                let tabName = value.split(' ');
+                this.firstName = tabName[0];
+                this.lastName = tabName[1];
+            }
+        }
+    },
+
+    watch: {
+        fullNameWatch: function (value) {
+            // On peut watcher et il détecte qu'il y a une modification 
+            let tabName = value.split(' ');
+            this.firstName = tabName[0];
+            this.lastName = tabName[1];
+        }
+    }
+
+
 })
 
 
