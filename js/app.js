@@ -1,4 +1,4 @@
-new Vue({
+let vm1 = new Vue({
     el: '#app',
     data: {
         title: "Application Quizz",
@@ -35,6 +35,34 @@ new Vue({
         }
     }
 });
+
+
+let vm = new Vue({
+    el: '#app2',
+    data: {
+        tabDays: ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi'],
+        seconds: 0
+    },
+
+    methods: {
+        addDay: function () {
+            this.tabDays.push('Samedi');
+        }
+    },
+
+    mounted: function () {
+        this.$interval = setInterval(() => {
+            this.seconds++;
+        }, 1000)
+    },
+
+    destroyed: function () {
+        clearInterval(this.$interval)
+    }
+})
+
+
+
 
 
 new Vue({

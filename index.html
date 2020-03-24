@@ -42,7 +42,7 @@
     </header>
 
     <!-- Page Content -->
-    <div class="container" id="app">
+    <div class="container" id="app" v-show="showElt">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <h1 class="mt-5">{{title}}</h1>
@@ -73,6 +73,25 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="container" id="app2">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="mt-5">VueJS 3/16 : L'instance</h1>
+
+                <ul>
+                    <li v-for="day in tabDays">{{day}}</li>
+                </ul>
+                <button @click="addDay">Ajouter un jour</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                {{seconds}}
+            </div>
+        </div>
+
     </div>
 
 
