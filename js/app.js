@@ -1,3 +1,15 @@
+new Vue({
+  el: "header",
+  data: {
+    menuItem1: "Item 1",
+    menuItem2: "Item 2",
+    menuItem3: "Item 3",
+    menuItem4: "Item 4",
+    link1: "#item1",
+    link2: "#item2"
+  }
+});
+
 let vm1 = new Vue({
   el: "#app",
   data: {
@@ -6,7 +18,8 @@ let vm1 = new Vue({
     showElt: false,
     tabDays: ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"],
     lvlAlert: true,
-    cls: "alert-success"
+    cls: "alert-success",
+    hide: false
   },
 
   methods: {
@@ -38,7 +51,8 @@ let vm2 = new Vue({
   el: "#app2",
   data: {
     tabDays: ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"],
-    seconds: 0
+    seconds: 0,
+    hide: false
   },
 
   methods: {
@@ -64,7 +78,8 @@ let vm3 = new Vue({
     success: false,
     message: "",
     firstName: "Jean",
-    lastName: "Dupont"
+    lastName: "Dupont",
+    hide: false
   },
 
   computed: {
@@ -105,10 +120,22 @@ let maDirective = function(el, binding) {
   console.log("Bind");
 };
 
+// On peut utiliser des filtres créer par défaut sur VUEJS2 ou les créer maisons comme ceci :
+Vue.filter("uppercase", function(value) {
+  return value.toUpperCase();
+});
+
+let uppercaseAvecPrefixe = function(value, prefixe) {
+  return prefixe + " " + value.toUpperCase();
+};
+
 let vm4 = new Vue({
   el: "#app4",
   directive: {
     toto: maDirective
+  },
+  filters: {
+    uppercaseAvecPrefixe
   },
 
   data: {
@@ -122,17 +149,5 @@ let vm4 = new Vue({
     launch: () => {
       console.log("KeyActived");
     }
-  }
-});
-
-new Vue({
-  el: "header",
-  data: {
-    menuItem1: "Item 1",
-    menuItem2: "Item 2",
-    menuItem3: "Item 3",
-    menuItem4: "Item 4",
-    link1: "#item1",
-    link2: "#item2"
   }
 });

@@ -42,7 +42,7 @@
     </header>
 
     <!-- Page Content -->
-    <div class="container" id="app" v-show="showElt">
+    <div class="container" id="app" v-if="hide">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <h1 class="mt-5">{{title}}</h1>
@@ -75,7 +75,7 @@
         </div>
     </div>
 
-    <div class="container" id="app2" style="display: none;">
+    <div class="container" id="app2" v-if="hide">
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="mt-5">VueJS 3/16 : L'instance</h1>
@@ -94,7 +94,7 @@
 
     </div>
 
-    <div class="container" id="app3" style="display: none;">
+    <div class="container" id="app3" v-if="hide">
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="mt-5">VueJS 4/16 : Propriétés combinés & watchers</h1>
@@ -148,7 +148,7 @@
                 -->
                 <a href="http://www.google.fr" @click.prevent="launch">Go to google</a>
                 <input type="text" v-model.number="message" @keyup.space="launch" />
-                {{message}}
+                {{message | uppercaseAvecPrefixe('je suis un prefixe')}}
                 <input type="text" v-toto.dir1.dir2="message" />
             </div>
         </div>
