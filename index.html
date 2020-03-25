@@ -94,7 +94,7 @@
 
     </div>
 
-    <div class="container" id="app3">
+    <div class="container" id="app3" style="display: none;">
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="mt-5">VueJS 4/16 : Propriétés combinés & watchers</h1>
@@ -121,8 +121,37 @@
                 </p>
             </div>
         </div>
+    </div>
 
+    <div class="container" id="app4">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="mt-5">VueJS 5/16 :Les directives</h1>
+                <!-- 
+                    Sur les click :
+                    le @click.prevent evite de rajouter un e.preventDefault en JS
+                    Ou .stop ou .prevent.stop pour faire de la propagation vers le haut
+                    .capture et .self existe aussi pour les types click
+                    ..
+                    Sur les input :
+                    le .lazy évite de modifier le message en même temps que le texte mais qu'une fois l'input non focus
+                    l'evenement ne sera pas lancer à chaque fois qu'on écrit mais au onChange
+                    Il existe aussi .number ou .trim (.number marche genre 0001 = 1)
+                    ..
+                    Sur les keyUp :
+                    On peut indiquer une keyUp uniquement sur barre espace ou autre avec @keyUp.space ou .enter
+                    .. 
+                    On peut créer des directives : 
+                    ex : v-toto.dir1.dir2 ="methods"
+                
 
+                -->
+                <a href="http://www.google.fr" @click.prevent="launch">Go to google</a>
+                <input type="text" v-model.number="message" @keyup.space="launch" />
+                {{message}}
+                <input type="text" v-toto.dir1.dir2="message" />
+            </div>
+        </div>
     </div>
 
 
