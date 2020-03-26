@@ -142,7 +142,124 @@ let vm4 = new Vue({
     success: false,
     message: "",
     firstName: "Jean",
-    lastName: "Dupont"
+    lastName: "Dupont",
+    hide: false
+  },
+
+  methods: {
+    launch: () => {
+      console.log("KeyActived");
+    }
+  }
+});
+
+// Création d'un component
+/*
+Vue.component("moncomponent", {
+  props: {
+    type: { type: String, default: "alert-success" },
+    texte: String
+  },
+  template: `<div class="alert" :class="type">{{texte}}</div>`
+});
+*/
+
+let moncomponent = {
+  // On peut créer des propriétés / attributs de notre component,avec la possibilité de filtre comme ici avec String
+  props: {
+    type: { type: String, default: "alert-success" },
+    message: String
+  },
+  template: `<div class="alert message" :class="type">{{message}}</div>`
+};
+
+let counter = {
+  // On ne peut pas faire simplement data : {} comme dans une vue
+  // car ça sera une data générale alors qu'on veux quelques choses de spécifique à une instance
+  // donc on doit en faire une fonction qui retournera un objet
+  // Les DATA sont les données à utiliser dans le component
+  data: () => {
+    return {
+      count: 0
+    };
+  },
+
+  // Les PROPS sont liés aux propriétés HTML
+  props: {
+    start: { type: Number, default: 0 }
+  },
+
+  methods: {
+    increment: function() {
+      // ici on peut pas ()=> car <je ne sais pas>
+      this.count++;
+    }
+  },
+  template: `<button @click="increment"> {{count}} </button>`,
+
+  // Première solution pour le lancement du timer à partir de 3, on utilise le cycle de vie
+  // Idem on ne peut pas faire ()=> ici
+  mounted: function() {
+    this.count = this.start;
+  }
+
+  // 2 solution
+  /*
+  computed: {
+    total: function() {
+      return this.start + this.count;
+    }
+  }*/
+  // et du coup on pourra écrire :  template: `<button @click="increment"> {{total}} </button>`,
+};
+
+let formUser = {
+  props: {
+    //user: Object
+    value: Object
+  },
+  // on créé data() car sinon, dès qu'on modifie un nom/prénom, les valeurs changent aussi
+  // du coup on créé un userLocal
+  data() {
+    // Là on lui dit qu'il va prendre les mêmes propriétés que l'objet qui sera passé en paramètre
+    return {
+      //userLocal: { ...this.user } // équivaut à JSON.parse(JSON.stringify(this.user))
+      user: { ...this.value }
+    };
+  },
+  methods: {
+    save() {
+      this.$emit("input", this.user); // emit : pour faire référence à une méthode parente, à savoir la vue
+    }
+  },
+  // <slot> : permet de rajouter le texte saisi dans le HTML
+  template: `<form @submit.prevent="save">
+      <p><slot></slot></p>  
+      <p><slot name="texte1"></slot></p>  
+      <p><slot name="texte1"></slot></p>  
+      <div class="form-group" >
+        <label for="first">Firstname</label>
+        <input type="fisrt" class="form-control" v-model="user.firstName" placeholder="Enter firstname">
+      </div>
+      <div class="form-group">
+        <label for="last">Lastname</label>
+        <input type="last" class="form-control" v-model="user.lastName" placeholder="Enter lastname">
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>`
+};
+
+let vm5 = new Vue({
+  el: "#app5",
+
+  components: { moncomponent, counter, formUser }, // on ajoute tous les compenent que l'on souhaite utiliser dans la vue
+
+  data: {
+    message: "Hello",
+    user: {
+      firstName: "Jean",
+      lastName: "Delatour"
+    }
   },
 
   methods: {

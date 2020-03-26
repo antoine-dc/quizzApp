@@ -123,7 +123,7 @@
         </div>
     </div>
 
-    <div class="container" id="app4">
+    <div class="container" id="app4" v-if="hide">
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="mt-5">VueJS 5/16 :Les directives</h1>
@@ -150,6 +150,36 @@
                 <input type="text" v-model.number="message" @keyup.space="launch" />
                 {{message | uppercaseAvecPrefixe('je suis un prefixe')}}
                 <input type="text" v-toto.dir1.dir2="message" />
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="app5">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="mt-5">VueJS 6/16 :Les components</h1>
+                <!-- 
+                 
+
+                -->
+                <moncomponent :message="message">Test</moncomponent>
+                <counter></counter>
+                <counter :start="3"></counter>
+                <form-user v-model="user">
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Commodi tenetur molestiae quia
+                    officiis et? Quam, temporibus veritatis quisquam mollitia debitis corporis. Eius quibusdam,
+                    quidem quia odio obcaecati nisi reiciendis soluta.
+                    <div slot="texte1"> Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quia consectetur
+                        architecto tempora quam
+                        corporis possimus, non tenetur facilis saepe. Impedit delectus dolores eos inventore suscipit
+                        reiciendis provident temporibus alias nam.</div>
+                    <div slot="texte2"> Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quia consectetur
+                        architecto tempora quam
+                        corporis possimus, non tenetur facilis saepe. Impedit delectus dolores eos inventore suscipit
+                        reiciendis provident temporibus alias nam.</div>
+                </form-user>
+                <p>{{user}}</p>
+
             </div>
         </div>
     </div>
