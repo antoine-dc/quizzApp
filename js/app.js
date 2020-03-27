@@ -9,7 +9,7 @@ new Vue({
     link2: "#item2"
   }
 });
-
+/*
 let vm1 = new Vue({
   el: "#app",
   data: {
@@ -154,15 +154,15 @@ let vm4 = new Vue({
 });
 
 // Création d'un component
-/*
-Vue.component("moncomponent", {
-  props: {
-    type: { type: String, default: "alert-success" },
-    texte: String
-  },
-  template: `<div class="alert" :class="type">{{texte}}</div>`
-});
-*/
+
+// Vue.component("moncomponent", {
+//   props: {
+//     type: { type: String, default: "alert-success" },
+//     texte: String
+//   },
+//   template: `<div class="alert" :class="type">{{texte}}</div>`
+// });
+
 
 let moncomponent = {
   // On peut créer des propriétés / attributs de notre component,avec la possibilité de filtre comme ici avec String
@@ -204,12 +204,12 @@ let counter = {
   }
 
   // 2 solution
-  /*
-  computed: {
-    total: function() {
-      return this.start + this.count;
-    }
-  }*/
+  
+  // computed: {
+  //   total: function() {
+  //     return this.start + this.count;
+  //   }
+  // }
   // et du coup on pourra écrire :  template: `<button @click="increment"> {{total}} </button>`,
 };
 
@@ -256,6 +256,7 @@ let vm5 = new Vue({
 
   data: {
     message: "Hello",
+    hide: false,
     user: {
       firstName: "Jean",
       lastName: "Delatour"
@@ -266,5 +267,72 @@ let vm5 = new Vue({
     launch: () => {
       console.log("KeyActived");
     }
+  }
+});
+
+*/
+
+class NotificatiionStore {
+  constructor() {
+    this.state = {
+      count: 0
+    };
+  }
+
+  increment() {
+    this.state.count++;
+  }
+
+  decrement() {
+    this.state.count--;
+  }
+}
+
+let notif_store = new NotificatiionStore();
+
+let Counter = {
+  data() {
+    return {
+      state: notif_store.state
+    };
+  },
+  computed: {
+    counterRender() {
+      return this.state.count; // On fait appel ici au state.count contenu dans la classe NotificationStore
+    }
+  },
+  methods: {
+    incrementGo() {
+      notif_store.increment();
+    }
+  },
+  template: `<div class="original">
+    {{counterRender}}
+    <button @click="incrementGo">Incrément 2</button>
+  </div>
+  `
+};
+
+let Notifications = {
+  components: {
+    Counter
+  },
+  methods: {
+    addNotif() {
+      notif_store.increment();
+    }
+  },
+  template: `<div>
+    <counter class="copy"></counter>
+    <button @click="addNotif">Up me</button>
+  
+  </div>`
+};
+
+new Vue({
+  el: "#app6",
+  components: {
+    Notifications,
+    Counter
   }
 });
