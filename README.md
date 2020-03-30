@@ -1,6 +1,6 @@
 # appquizz
 
-> Quizz version le plus grand concours des animateurs en VueJS 2x !!
+> Quizz version le plus grand concours des animateurs en VueJS 2x !!!
 
 ## Build Setup
 
