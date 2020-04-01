@@ -7,10 +7,10 @@
         :key="index"
         :data="value"
         :index="index"
-        :players="tabPlayer"
+        :players="getPlayer"
       ></question>
     </div>
-    <div class="row align-items-end">
+    <div id="row-player" class="row align-items-end" :data-idPlayerActive="idPlayerActive">
       <player v-for="(value, index) in getPlayer" :key="index" :data="value" :index="index"></player>
     </div>
   </div>
@@ -19,9 +19,9 @@
 <script>
 /* Les classes */
 
-import Themes from "../Themes.js";
-import Question from "../Question.js";
-import Player from "../Player.js";
+import Themes from "../class/Themes.js";
+import Question from "../class//Question.js";
+import Player from "../class/Player.js";
 //import datas from "../data.js";
 /* Les components */
 import question from "@/components/Question";
@@ -91,7 +91,7 @@ let themeCG = new Themes(0, "Culture Générale", "#7f8c8d", [
 ]);
 
 let tabPlayer = [
-  new Player(1, "Claire", theme1),
+  new Player(1, "Claire", theme1, true),
   new Player(2, "Baptiste", theme2),
   new Player(3, "Clarisse", theme3),
   new Player(4, "Amélie", theme4)
@@ -102,7 +102,9 @@ export default {
   data() {
     return {
       msg: "App Quizz",
-      themes: [theme1, theme2, theme3, theme4, themeCG]
+      themes: [theme1, theme2, theme3, theme4, themeCG],
+      idPlayerActive: 1,
+      tabPlayer: []
     };
   },
   components: {

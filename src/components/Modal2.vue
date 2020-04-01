@@ -37,8 +37,9 @@
                   data-onstyle="success"
                   data-offstyle="danger"
                   data-width="100"
-                  v-model="isCorrect"
+                  v-model="ischeck"
                 />
+                {{ ischeck }}
               </form>
             </div>
           </div>
@@ -75,7 +76,7 @@ export default {
     }
   },
   data() {
-    return { isOpen: false, isCorrect: false };
+    return { isOpen: false, ischeck: false };
   },
   methods: {
     closeModal(index) {
@@ -89,66 +90,14 @@ export default {
     showAnwser(index) {
       $(".answer-" + index).css("display", "block");
     },
-    getActiveIdPlayer() {
-      /* let idActive = 0;
-
-      // On récupère le player actif
-      for (const player of this.$attrs.players) {
-        if (player.isActive) {
-          idActive = player.idPlayer;
-          player.isActive = false;
-
-          break;
-        }
-      }
-
-      // On passe le joueur suivant à actif
-      if (idActive < this.$attrs.players.length) {
-        this.$attrs.players[idActive].isActive = true;
-      } else {
-        this.$attrs.players[0].isActive = true;
-      }
-
-      return idActive;*/
-    },
     checkAnswer(index) {
       let goodAnswer = $("#result-" + index).prop("checked");
-      //let idPlayer = this.getActiveIdPlayer();
+      //console.log(tabPlayer);
 
-      let idActived = 0;
-      let idNextActive = 0;
-
-      // On récupère le player actif
-      for (let player of this.$attrs.players) {
-        if (player.isActive) {
-          idActived = player.idPlayer;
-          player.isActive = false;
-
-          $("#player-" + player.idPlayer).removeClass("pulse");
-          break;
-        }
-      }
-
-      // On passe le joueur suivant à actif
-      if (idActived < this.$attrs.players.length) {
-        idNextActive = idActived;
-      }
-      console.log(isActived);
-      console.log(idNextActive);
-      this.$attrs.players[idNextActive].isActive = true;
-      $("#player-" + idNextActive).addClass("pulse");
-
-      //console.log(isActive);
-
-      $("#" + index).removeClass("show");
       console.log(goodAnswer);
     }
   },
-  computed: {
-    /* getActivePlayer() {
-      this.getActiveIdPlayer();
-    }*/
-  }
+  computed: {}
 };
 </script>
 

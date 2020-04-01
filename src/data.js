@@ -1,3 +1,6 @@
+import Themes from "./class/Themes.js";
+import Player from "./class/Player.js";
+
 let theme1 = new Themes(1, "Architecture", "#2980b9", [{
     question: "Question 1",
     answer: "Réponse 1"
@@ -198,19 +201,19 @@ let themeCG = new Themes(0, "Culture Générale", "#7f8c8d", [{
   }
 ]);
 
-let tabPlayer = [
-  new Player(1, "Claire", theme1),
+let players = [
+  new Player(1, "Claire", theme1, true),
   new Player(2, "Baptiste", theme2),
   new Player(3, "Clarisse", theme3),
   new Player(4, "Amélie", theme4)
 ];
 
 
-let tabTheme = [theme1, theme2, theme3, theme4, themeCG];
+let themes = [theme1, theme2, theme3, theme4, themeCG];
 
 let data = {
-  tabPlayer,
-  tabTheme
+  players,
+  themes
 }
 
 export default data

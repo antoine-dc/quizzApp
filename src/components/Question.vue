@@ -19,7 +19,7 @@ export default {
   name: "Question",
   props: {
     data: Object,
-    players: Object,
+    players: Array,
     index: Number
   },
   components: {
