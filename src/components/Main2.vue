@@ -1,40 +1,78 @@
 <template>
   <div class="container">
     <h1>{{ msg }}</h1>
-    <!-- Questions -->
+
     <div class="row">
+      <div class="col-md">
+        <button
+          type="button"
+          class="btn btn-info"
+          data-dismiss="modal"
+          @click="startGame()"
+          v-if="!isStarted"
+        >
+          Lancer la partie
+        </button>
+      </div>
+    </div>
+    <!-- Questions -->
+    <div class="row" v-if="isStarted" id="top">
       <div
         v-for="(question, index) in getQuestions"
         :key="index"
         class="col-md-2 card"
-        :style="[ question.disabled   ? { 'background-color': question.theme.color } :  {'background': '#ecf0f1'}]"
+        :style="{ backgroundColor: getBgQuestion(question) }"
         @click.prevent="question.disabled ? chooseQuestion(question) : {}"
       >
         <div class="card-body">
-          <p class="card-text">{{ question.disabled ? index : '' }}</p>
+          <p class="card-text">{{ question.disabled ? index + 1 : "" }}</p>
         </div>
       </div>
     </div>
+    <!-- CountDown Start -->
+    <div class="row">
+      <div class="col-12 align-self-center">
+        <circular-count-down-timer
+          style="color:#3498db"
+          :initial-value="20"
+          :stroke-width="5"
+          :seconds-stroke-color="'#3498db'"
+          :underneath-stroke-color="'#bdc3c7'"
+          :size="150"
+          :padding="4"
+          :second-label="''"
+          :show-second="true"
+          :show-minute="false"
+          :show-hour="false"
+          :show-negatives="false"
+          @finish="finishTimerStart"
+          v-if="timerStart"
+        ></circular-count-down-timer>
+      </div>
+    </div>
+    <!-- End CountDown Start -->
     <!-- Players -->
-    <div class="row align-items-end">
+    <div class="row align-items-end" v-if="isStarted">
       <div v-for="(player, index) in getPlayer" :key="index" class="col-3">
         <div
           class="card"
           :id="'player-' + player.idPlayer"
-          :class="{ pulse: player.isActive }"
-          :style="[ {'background-color': player.theme.color} ]"
+          :class="{ pulse: player.isActive && !timerStart }"
+          :style="[{ 'background-color': player.theme.color }]"
           :data-idPlayer="player.theme.id"
           @change="idActivePlayer"
         >
           <div class="card-body">
             <p class="card-text">
-              {{player.namePlayer}}
-              <span class="badge badge-light">{{player.totalPoints}}</span>
+              {{ player.namePlayer }}
+              <span class="badge badge-light">{{ player.totalPoints }}</span>
             </p>
           </div>
         </div>
       </div>
     </div>
+    <!-- End Players -->
+
     <!-- Modal Question-->
     <div
       class="modal fade"
@@ -47,24 +85,36 @@
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div
           class="modal-content"
-          :style="[questionActive !== null  ? { 'background-color': questionActive.theme.color } :  {}]"
+          :style="[
+            questionActive !== null
+              ? { 'background-color': questionActive.theme.color }
+              : {}
+          ]"
         >
           <div class="modal-header">
-            <h5 class="modal-title">{{questionActive !== null ? questionActive.theme.name : ''}}</h5>
+            <h5 class="modal-title">
+              {{ questionActive !== null ? questionActive.theme.name : "" }}
+            </h5>
             <button
               type="button"
               class="close"
               data-dismiss="modal"
               aria-label="Close"
-              @click.prevent.stop="activeModal=!activeModal"
+              @click.prevent.stop="activeModal = !activeModal"
             >
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">{{questionActive !== null ? questionActive.question: ''}}</div>
+          <div class="modal-body">
+            {{ questionActive !== null ? questionActive.question : "" }}
+          </div>
 
-          <div class="modal-footer answer" :class="'answer-' + 0 " v-show="showAnser">
-            {{questionActive !== null ? questionActive.answer : ''}}
+          <div
+            class="modal-footer answer"
+            :class="'answer-' + 0"
+            v-show="showAnser"
+          >
+            {{ questionActive !== null ? questionActive.answer : "" }}
             <div class="row">
               <div class="col-md">
                 <form>
@@ -83,20 +133,42 @@
               </div>
             </div>
           </div>
+          <!--
+          <div class="modal-footer">
+           
+            <circular-count-down-timer
+              style="color:#3498db"
+              :initial-value="initTimerModalC"
+              :stroke-width="5"
+              :seconds-stroke-color="'#3498db'"
+              :underneath-stroke-color="'#bdc3c7'"
+              :size="150"
+              :padding="4"
+              :second-label="''"
+              :show-second="true"
+              :show-minute="false"
+              :show-hour="false"
+              :show-negatives="false"
+            ></circular-count-down-timer>
+          </div>-->
           <div class="modal-footer">
             <button
               type="button"
               class="btn btn-light"
               @click.prevent.stop="showAnser = !showAnser"
               v-show="!showAnser"
-            >Voir la solution</button>
+            >
+              Voir la solution
+            </button>
             <button
               type="button"
               class="btn btn-dark"
               data-dismiss="modal"
               @click.prevent.stop="checkAnswer()"
               v-show="showAnser"
-            >Valider</button>
+            >
+              Valider
+            </button>
           </div>
         </div>
       </div>
@@ -115,20 +187,52 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Fin de la partie</h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-              @click.prevent.stop="showModalEnd=!showModalEnd"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
           </div>
-          <div class="modal-body">Les scores{{}}</div>
+          <div class="modal-body">
+            <div class="row align-items-end">
+              <transition-group
+                name="fadeScore"
+                mode="out-in"
+                class="transition-fadeScore"
+              >
+                <div
+                  class="col-3"
+                  v-for="(player, index) in getPlayer"
+                  :key="index"
+                  :class="{ winner: player.totalPoints === getBestScore }"
+                >
+                  <div class="progress progress-bar-vertical">
+                    <div
+                      class="progress-bar progress-bar-success progress-bar-striped active"
+                      role="progressbar"
+                      aria-valuenow="100"
+                      aria-valuemin="0"
+                      :aria-valuemax="getBestScore"
+                      :style="{
+                        height: (100 * player.totalPoints) / getBestScore + '%',
+                        backgroundColor: player.theme.color
+                      }"
+                    >
+                      {{ player.totalPoints }}
+                    </div>
+                  </div>
+                  <h5 :style="{ color: player.theme.color }">
+                    {{ player.namePlayer }}
+                  </h5>
+                </div>
+              </transition-group>
+            </div>
+          </div>
 
           <div class="modal-footer">
-            <button type="button" class="btn btn-dark" data-dismiss="modal">Recommencer</button>
+            <button
+              type="button"
+              class="btn btn-info"
+              data-dismiss="modal"
+              @click="reload()"
+            >
+              Recommencer
+            </button>
           </div>
         </div>
       </div>
@@ -152,6 +256,7 @@ export default {
   data() {
     return {
       msg: "App Quizz",
+      isStarted: false,
       themes: datas.themes,
       players: datas.players,
       idActivePlayer: 1,
@@ -161,11 +266,14 @@ export default {
       isChecked: false,
       maxQuestions: 5,
       countQuestions: 0,
-      showModalEnd: false
+      showModalEnd: false,
+      timerStart: false,
+      initTimerModal: 30
     };
   },
   computed: {
-    // On récupérè toutes les questions et on les mélange
+    // Get all question and shuffle
+    // Return an array of object Question
     getQuestions() {
       let tabQuestions = [];
       this.themes.forEach(theme => {
@@ -184,18 +292,41 @@ export default {
 
       return _.shuffle(tabQuestions); // use lodash
     },
+    // Return all players, it's a array of object Player
     getPlayer() {
       return this.players;
+    },
+    // Return an int, it's the bestScore when the end of game
+    getBestScore() {
+      let bestScore = 0;
+
+      this.players.forEach(player => {
+        if (player.totalPoints > bestScore) {
+          bestScore = player.totalPoints;
+        }
+      });
+
+      return bestScore;
+    },
+    // TODO
+    initTimerModalC() {
+      return this.initTimerModal;
     }
   },
   methods: {
     chooseQuestion(question) {
       this.questionActive = question;
       this.activeModal = true;
+      this.initTimerModal = 30;
     },
     checkAnswer() {
       let goodAnswer = $("#checkAnswer").prop("checked");
       let idTheme = this.questionActive.theme.id;
+      console.log("----------------");
+
+      console.log("isStarted :" + this.isStarted);
+      console.log("timerStart :" + this.timerStart);
+      console.log("question.disabled :" + this.questionActive.disabled);
 
       if (goodAnswer) {
         if (idTheme === this.idActivePlayer) {
@@ -234,7 +365,56 @@ export default {
       this.activeModal = false;
       this.showAnser = false;
       this.isChecked = false;
+
+      console.log("----------------");
+
+      console.log("isStarted :" + this.isStarted);
+      console.log("timerStart :" + this.timerStart);
+      console.log("question.disabled :" + this.questionActive.disabled);
+    },
+
+    reload() {
+      location.reload();
+    },
+    startGame() {
+      this.timerStart = true;
+      this.isStarted = true;
+      /*
+      console.log(this.$refs["#allQuestions"]);
+      console.log(this.$refs["allQuestions"]);
+      console.log(this.$els["#allQuestions"]);
+
+      let element = this.$refs["#allQuestions"];
+
+      window.scrollTo(0, element.offsetTop);*/
+    },
+    getBgQuestion(question) {
+      let bg;
+
+      if (this.timerStart) {
+        bg = question.theme.color;
+      } else if (question.disabled === false) {
+        bg = question.theme.color;
+      } else {
+        //bg = question.disabled ? question.theme.color : "#ecf0f1";
+
+        bg = "#34495e"; // Couleur neutre
+      }
+
+      return bg;
+      /* let bg = this.question.disabled   ? { this.question.theme.color } :  {'background': '#ecf0f1'}
+      return this.question.disabled   ? { this.question.theme.color } :  {'background': '#ecf0f1'}*/
+    },
+    finishTimerStart() {
+      this.timerStart = false;
+    },
+    initTimerModalF() {
+      return this.initTimerModal;
     }
+  },
+  updated: function() {
+    let app = document.getElementById("app");
+    window.scrollTo({ top: app.scrollHeight, behavior: "smooth" });
   }
 };
 </script>

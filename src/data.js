@@ -1,7 +1,7 @@
 import Themes from "./class/Themes.js";
 import Player from "./class/Player.js";
 
-let theme1 = new Themes(1, "Architecture", "#2980b9", [{
+let theme1 = new Themes(1, "Architecture", "#3498db", [{
     question: "Question 1",
     answer: "Réponse 1"
   },
@@ -69,7 +69,7 @@ let theme2 = new Themes(2, "Sport", "#e74c3c", [{
   }
 ]);
 
-let theme3 = new Themes(3, "Cinéma", "#27ae60", [{
+let theme3 = new Themes(3, "Cinéma", "#2ecc71", [{
     question: "Question 1",
     answer: "Réponse 1"
   },
@@ -102,7 +102,7 @@ let theme3 = new Themes(3, "Cinéma", "#27ae60", [{
     answer: "Réponse 8"
   }
 ]);
-let theme4 = new Themes(4, "Jardin", "#8e44ad", [{
+let theme4 = new Themes(4, "Jardin", "#9b59b6", [{
     question: "Question 1",
     answer: "Réponse 1"
   },
@@ -135,7 +135,7 @@ let theme4 = new Themes(4, "Jardin", "#8e44ad", [{
     answer: "Réponse 8"
   }
 ]);
-let themeCG = new Themes(0, "Culture Générale", "#7f8c8d", [{
+let themeCG = new Themes(0, "Culture Générale", "#95a5a6", [{
     question: "Question 1",
     answer: "Réponse 1"
   },

@@ -13,7 +13,7 @@ export default {
 
 <style>
 body {
-  background-color: #f8f9fa;
+  background-color: #ecf0f1;
 }
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
