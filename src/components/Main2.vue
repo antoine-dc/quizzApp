@@ -10,9 +10,7 @@
           data-dismiss="modal"
           @click="startGame()"
           v-if="!isStarted"
-        >
-          Lancer la partie
-        </button>
+        >Lancer la partie</button>
       </div>
     </div>
     <!-- Questions -->
@@ -22,10 +20,10 @@
         :key="index"
         class="col-md-2 card"
         :style="{ backgroundColor: getBgQuestion(question) }"
-        @click.prevent="question.disabled ? chooseQuestion(question) : {}"
+        @click.prevent="question.disabled && !timerStart ? chooseQuestion(question) : {}"
       >
         <div class="card-body">
-          <p class="card-text">{{ question.disabled ? index + 1 : "" }}</p>
+          <p class="card-text" :style="{ 'color': getColorQuestion(question) }">{{ index + 1 }}</p>
         </div>
       </div>
     </div>
@@ -34,7 +32,7 @@
       <div class="col-12 align-self-center">
         <circular-count-down-timer
           style="color:#3498db"
-          :initial-value="20"
+          :initial-value="initTimerModal"
           :stroke-width="5"
           :seconds-stroke-color="'#3498db'"
           :underneath-stroke-color="'#bdc3c7'"
@@ -66,6 +64,8 @@
             <p class="card-text">
               {{ player.namePlayer }}
               <span class="badge badge-light">{{ player.totalPoints }}</span>
+              <br />
+              <span>{{ player.theme.name }}</span>
             </p>
           </div>
         </div>
@@ -92,28 +92,11 @@
           ]"
         >
           <div class="modal-header">
-            <h5 class="modal-title">
-              {{ questionActive !== null ? questionActive.theme.name : "" }}
-            </h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-              @click.prevent.stop="activeModal = !activeModal"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
+            <h5 class="modal-title">{{ questionActive !== null ? questionActive.theme.name : "" }}</h5>
           </div>
-          <div class="modal-body">
-            {{ questionActive !== null ? questionActive.question : "" }}
-          </div>
+          <div class="modal-body">{{ questionActive !== null ? questionActive.question : "" }}</div>
 
-          <div
-            class="modal-footer answer"
-            :class="'answer-' + 0"
-            v-show="showAnser"
-          >
+          <div class="modal-footer answer" :class="'answer-' + 0" v-show="showAnser">
             {{ questionActive !== null ? questionActive.answer : "" }}
             <div class="row">
               <div class="col-md">
@@ -123,11 +106,11 @@
                     type="checkbox"
                     :checked="isChecked"
                     data-toggle="toggle"
-                    data-on="Vrai"
-                    data-off="Faux"
+                    data-on="Bonne réponse"
+                    data-off="Mauvaise réponse"
                     data-onstyle="success"
                     data-offstyle="danger"
-                    data-width="100"
+                    data-width="150"
                   />
                 </form>
               </div>
@@ -157,18 +140,14 @@
               class="btn btn-light"
               @click.prevent.stop="showAnser = !showAnser"
               v-show="!showAnser"
-            >
-              Voir la solution
-            </button>
+            >Voir la solution</button>
             <button
               type="button"
               class="btn btn-dark"
               data-dismiss="modal"
               @click.prevent.stop="checkAnswer()"
               v-show="showAnser"
-            >
-              Valider
-            </button>
+            >Valider</button>
           </div>
         </div>
       </div>
@@ -190,11 +169,7 @@
           </div>
           <div class="modal-body">
             <div class="row align-items-end">
-              <transition-group
-                name="fadeScore"
-                mode="out-in"
-                class="transition-fadeScore"
-              >
+              <transition-group name="fadeScore" mode="out-in" class="transition-fadeScore">
                 <div
                   class="col-3"
                   v-for="(player, index) in getPlayer"
@@ -212,13 +187,9 @@
                         height: (100 * player.totalPoints) / getBestScore + '%',
                         backgroundColor: player.theme.color
                       }"
-                    >
-                      {{ player.totalPoints }}
-                    </div>
+                    >{{ player.totalPoints }}</div>
                   </div>
-                  <h5 :style="{ color: player.theme.color }">
-                    {{ player.namePlayer }}
-                  </h5>
+                  <h5 :style="{ color: player.theme.color }">{{ player.namePlayer }}</h5>
                 </div>
               </transition-group>
             </div>
@@ -230,13 +201,20 @@
               class="btn btn-info"
               data-dismiss="modal"
               @click="reload()"
-            >
-              Recommencer
-            </button>
+            >Recommencer</button>
           </div>
         </div>
       </div>
     </div>
+    <audio id="audio-final">
+      <source src="../assets/audio/success-fanfare-trumpets.wav" />
+    </audio>
+    <audio id="audio-success">
+      <source src="../assets/audio/success.mp3" />
+    </audio>
+    <audio id="audio-error">
+      <source src="../assets/audio/error.mp3" />
+    </audio>
   </div>
 </template>
 
@@ -255,20 +233,21 @@ export default {
   name: "Main",
   data() {
     return {
-      msg: "App Quizz",
+      msg: "App Quizz Theme",
       isStarted: false,
       themes: datas.themes,
       players: datas.players,
+      sounds: datas.sounds,
       idActivePlayer: 1,
       activeModal: false,
       questionActive: null,
       showAnser: false,
       isChecked: false,
-      maxQuestions: 5,
+      maxQuestions: 48,
       countQuestions: 0,
       showModalEnd: false,
       timerStart: false,
-      initTimerModal: 30
+      initTimerModal: 20
     };
   },
   computed: {
@@ -329,6 +308,7 @@ export default {
       console.log("question.disabled :" + this.questionActive.disabled);
 
       if (goodAnswer) {
+        document.querySelector("#audio-success").play();
         if (idTheme === this.idActivePlayer) {
           // Si c'est le theme du joueur
           this.players[this.idActivePlayer - 1].totalPoints += 2;
@@ -339,6 +319,8 @@ export default {
           // Si c'est le theme d'un autre
           this.players[this.idActivePlayer - 1].totalPoints += 3;
         }
+      } else {
+        document.querySelector("#audio-error").play();
       }
 
       // On passe le tour au joueur suivant
@@ -359,6 +341,7 @@ export default {
 
       if (this.countQuestions === this.maxQuestions) {
         this.showModalEnd = true;
+        document.querySelector("#audio-final").play();
       }
 
       // Initialisaiton du modal
@@ -396,14 +379,15 @@ export default {
       } else if (question.disabled === false) {
         bg = question.theme.color;
       } else {
-        //bg = question.disabled ? question.theme.color : "#ecf0f1";
-
         bg = "#34495e"; // Couleur neutre
       }
 
       return bg;
-      /* let bg = this.question.disabled   ? { this.question.theme.color } :  {'background': '#ecf0f1'}
-      return this.question.disabled   ? { this.question.theme.color } :  {'background': '#ecf0f1'}*/
+    },
+    getColorQuestion(question) {
+      if (question.disabled === false) {
+        return question.theme.color;
+      }
     },
     finishTimerStart() {
       this.timerStart = false;

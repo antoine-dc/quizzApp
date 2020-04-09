@@ -1,203 +1,203 @@
 import Themes from "./class/Themes.js";
 import Player from "./class/Player.js";
 
-let theme1 = new Themes(1, "Architecture", "#3498db", [{
-    question: "Question 1",
-    answer: "Réponse 1"
+let theme1 = new Themes(1, "Martin Luther King", "#3498db", [{
+    question: "Citez son discours célébre ?",
+    answer: "I have a dream"
   },
   {
-    question: "Question 2",
-    answer: "Réponse 2"
+    question: "Quelle était la profession de Martin L. King ? ",
+    answer: "Il était pasteur baptiste en Alabama"
   },
   {
-    question: "Question 3",
-    answer: "Réponse 3"
+    question: "Quel distinction recoit-il en 1964 ?",
+    answer: "Il a reçu le Prix Nobel de la Paix"
   },
   {
-    question: "Question 4",
-    answer: "Réponse 4"
+    question: "Quelle année a-t-il fait son fameux discours ? ",
+    answer: "C'était le 28 aôut 1963"
   },
   {
-    question: "Question 5",
-    answer: "Réponse 5"
+    question: "Où a eu lieu son fameur discours ?",
+    answer: "Sur les marches du Lincoln Memorial"
   },
   {
-    question: "Question 6",
-    answer: "Réponse 6"
+    question: "Combien il y avait-t-il de personne pendant son discours ? A 20 000 près",
+    answer: "Il y avait 250 000 personnes "
   },
   {
-    question: "Question 7",
-    answer: "Réponse 7"
+    question: "Comment s'appelle la personne qui a assasiné Martin L. King ? ",
+    answer: "C'est James Earl Ray, c'était un  ségrégationniste blanc"
   },
   {
-    question: "Question 8",
-    answer: "Réponse 8"
+    question: "Quel chanteur a écrit la chanson 'Happy Birthday' en hommage à Martin L. King ?",
+    answer: "C'est Stevie Wonder, pour faire prmouvoir la date d'anniversaire de Martin L.K. devienne une fête nationale"
   }
 ]);
 
-let theme2 = new Themes(2, "Sport", "#e74c3c", [{
-    question: "Question 1",
-    answer: "Réponse 1"
+let theme2 = new Themes(2, "8 miles", "#e74c3c", [{
+    question: "En quelle année est sortie le film? ",
+    answer: "Le film est sorti en 2002"
   },
   {
-    question: "Question 2",
-    answer: "Réponse 2"
+    question: "Comment s'appelle le personnage joué par Eminem ?",
+    answer: "C'est Jimmy Smith Jr alias « B-Rabbit »"
   },
   {
-    question: "Question 3",
-    answer: "Réponse 3"
+    question: "Avec qui vit le personnage principale ?",
+    answer: "Avec sa mère et sa soeur "
   },
   {
-    question: "Question 4",
-    answer: "Réponse 4"
+    question: "Quel est le titre de la bande son ?",
+    answer: "C'est Lose Yourself ! Eminem a reçu l'Academy Award de la meilleure chanson originale et même un Oscar !!"
   },
   {
-    question: "Question 5",
-    answer: "Réponse 5"
+    question: "Comment s'appelle le groupe d'Eminem ?",
+    answer: "Il s'agit de D12 !"
   },
   {
-    question: "Question 6",
-    answer: "Réponse 6"
+    question: "Où se déroule l'action ?",
+    answer: "Il se passe à Détroit. D'ailleurs 8 Mile Road est une route qui sépare la ville de Détroit, majoritairement noire, et la banlieue nord, majoritairement blanche."
   },
   {
-    question: "Question 7",
-    answer: "Réponse 7"
+    question: "Que faisaient le réalisateur du film pour éviter aux figurants de s'ennuyer lors des tournages des battles ?",
+    answer: "Curtis Hanson, a lancé un grand concours de battle amenant une grande majorité du public à participer. Parmi eux, quatre personnes ont été choisies pour affronter Eminem en personne."
   },
   {
-    question: "Question 8",
-    answer: "Réponse 8"
+    question: "Qui est Papa Doc ?",
+    answer: "C'est le tenant du titre des battles et l'antagoniste principal de Jimmy dans tout le film"
   }
 ]);
 
-let theme3 = new Themes(3, "Cinéma", "#2ecc71", [{
-    question: "Question 1",
-    answer: "Réponse 1"
+let theme3 = new Themes(3, "Friends", "#2ecc71", [{
+    question: " Quel est l'événement survenu sur une plage que Chandler, Joey et Monica refusent de révéler aux autres, avant de craquer ?",
+    answer: "Monica s'est fait piquer par une méduse et Chandler a dû lui uriner dessus pour calmer la douleur"
   },
   {
-    question: "Question 2",
-    answer: "Réponse 2"
+    question: "En quelle année a été diffusé le premier épisode ?",
+    answer: "En septembre 1994"
   },
   {
-    question: "Question 3",
-    answer: "Réponse 3"
+    question: "Qui est Ursula ?!",
+    answer: "C'est la soeur jumelle de Phoebe ! Elle a été serveuse, masseuse et même star du X !"
   },
   {
-    question: "Question 4",
-    answer: "Réponse 4"
+    question: "Comment s'appelle le fameux coffee-shop où il se rejoigne tout le temps ?",
+    answer: "C'est le Central Perk, tenu par le maladroit Gunter !"
   },
   {
-    question: "Question 5",
-    answer: "Réponse 5"
+    question: "Quel acteur pami la liste n'est pas apparu dans Friens : Hugh Laurie - Bruce Willis - George Clooney - John Travolta - Jean-Claude Van Damme ",
+    answer: "En effet, John Travolta n'est jamais apparu dans la série !!"
   },
   {
-    question: "Question 6",
-    answer: "Réponse 6"
+    question: "Comment s'appelle l'acteur qui joue Ross ?",
+    answer: "David Schwimmer, un nom imprononcable !!"
   },
   {
-    question: "Question 7",
-    answer: "Réponse 7"
+    question: "Comment est habillée Rachel lors du premier épisode ?",
+    answer: "Elle est en robe de mariée ! Elle vient de s’enfuir de son mariage !"
   },
   {
-    question: "Question 8",
-    answer: "Réponse 8"
+    question: "Comment s'appelle l'animal de compagnie de Ross ?",
+    answer: "Un singe baptisé Marcel"
   }
 ]);
-let theme4 = new Themes(4, "Jardin", "#9b59b6", [{
-    question: "Question 1",
-    answer: "Réponse 1"
+let theme4 = new Themes(4, "Permaculture", "#9b59b6", [{
+    question: "Quelle est l'expression américaine à l'origine du mot ?",
+    answer: "Il est issu de l'expression américaine « permanent agriculture »"
   },
   {
-    question: "Question 2",
-    answer: "Réponse 2"
+    question: "La permaculture repose sur 3 principes éthiques, lesquelles ?",
+    answer: "Prendre soin de la Terre, prendre soin des Hommes, partager équitablement les ressources."
   },
   {
-    question: "Question 3",
-    answer: "Réponse 3"
+    question: "Le choux de Bruxelles est un légume fleur ou un légume feuille ?",
+    answer: "C'est un légume feuille ! Comme la salade, les épinards ou les blettes !"
   },
   {
-    question: "Question 4",
-    answer: "Réponse 4"
+    question: "La permaculture ne concerne pas que l'agriculture mais englobe aussi les champs économiques et sociaux ?",
+    answer: "C'est vrai !"
   },
   {
-    question: "Question 5",
-    answer: "Réponse 5"
+    question: "Quel fruit s'associe bien le poireaux ?",
+    answer: "Il s'agit des fraises ! :) "
   },
   {
-    question: "Question 6",
-    answer: "Réponse 6"
+    question: "Quelle personne n'a pas participé à l'essor de la permaculture ? Entre  David Holmgren - Bernard Montgomery - Masanobu Fukuoka -  Bill Mollison  ",
+    answer: "L'intru s'agit de Bernard Montgomery ! Pour l'histoire,  c'était le 1er vicomte Montgomery of Alamein, est un field marshal britannique, né le 17 novembre 1887 à Londres et mort le 24 mars 1976 à Alton (Hampshire). On le connaît aussi sous son surnom « Monty ». MAIS ON S'EN FOUT !"
   },
   {
-    question: "Question 7",
-    answer: "Réponse 7"
+    question: "La méthode OBREDIM est un outil pour concevoir des designs en permaculture. Mais que signifie le B?",
+    answer: "Il s'agit de Boundary, la 'limite'"
   },
   {
-    question: "Question 8",
-    answer: "Réponse 8"
+    question: "L’aménagement de l'espace, ou zonage, est fondamental pour la permaculture. A quoi correspond la zone 3 ?",
+    answer: "La zone 3 correspond aux pâturages et aux céréales. Cette production tend à être plus orientée vers la vente"
   }
 ]);
 let themeCG = new Themes(0, "Culture Générale", "#95a5a6", [{
-    question: "Question 1",
-    answer: "Réponse 1"
+    question: "Quel est le plus long fleuve d'Europe occidentale ?",
+    answer: " Le Rhin"
   },
   {
-    question: "Question 2",
-    answer: "Réponse 2"
+    question: "Qui est inséparable de Bonnie Parker ?",
+    answer: "Clyde Barrow"
   },
   {
-    question: "Question 3",
-    answer: "Réponse 3"
+    question: "Qui est le dieu du Soleil dans l'ancienne Egypte ?",
+    answer: " Râ"
   },
   {
-    question: "Question 4",
-    answer: "Réponse 4"
+    question: "Quelle ville a construit le premier métro ?",
+    answer: "Londres"
   },
   {
-    question: "Question 5",
-    answer: "Réponse 5"
+    question: "Quel est le pays natal de Wolfgang Amadeus Mozart ?",
+    answer: "L'Autriche"
   },
   {
-    question: "Question 6",
-    answer: "Réponse 6"
+    question: "De quel côté de l'assiete doit-on poser le verre a vin ?",
+    answer: " A droite"
   },
   {
-    question: "Question 7",
-    answer: "Réponse 7"
+    question: "Qui est le héros des 'Liaisons dangereuses' ? ",
+    answer: "Valmont"
   },
   {
-    question: "Question 8",
-    answer: "Réponse 8"
+    question: "Qui a écrit 'Cendrillon' en 1697 ?",
+    answer: "Charles Perrault"
   },
   {
-    question: "Question 9",
-    answer: "Réponse 9"
+    question: "De quel pays vient une voiture qui porte la lettre D ?",
+    answer: "L'allemagne"
   },
   {
-    question: "Question 10",
-    answer: "Réponse 10"
+    question: "Quel groupe réunissait Filip Nikolic, Frank Delhaye et Adel Kachermi ? ",
+    answer: "Les 2be3"
   },
   {
-    question: "Question 11",
-    answer: "Réponse 11"
+    question: "Aux Etats-Unis, quel sport est concerné par le 'Super Bowl' ?",
+    answer: "Football américain"
   },
   {
-    question: "Question 12",
-    answer: "Réponse 12"
+    question: "Quel adjectif se rapporte au bonnet rouge porté pendant la Révolution ?",
+    answer: "Phrygien"
   },
   {
-    question: "Question 13",
-    answer: "Réponse 13"
+    question: "Quelle pipe à long tuyau fumaient les Indiens d'Amérique du Nord ?",
+    answer: "Le calumet"
   },
   {
-    question: "Question 14",
-    answer: "Réponse 13"
+    question: "Quel sport associe-t-on au 'Quinze de France' ?",
+    answer: "Le rugby"
   },
   {
-    question: "Question 15",
-    answer: "Réponse 14"
+    question: "De quel pays Hô Chi Minh proclame-t-il l'indépendance en 1945 ? ",
+    answer: "Le Vietnam"
   },
   {
-    question: "Question 16",
-    answer: "Réponse 15"
+    question: "Avec la Belgique et le Luxembourg, quel pays forme le Benelux ?",
+    answer: "Les Pays-Bas"
   }
 ]);
 
@@ -211,9 +211,14 @@ let players = [
 
 let themes = [theme1, theme2, theme3, theme4, themeCG];
 
+let sounds = {
+
+}
+
 let data = {
   players,
-  themes
+  themes,
+  sounds
 }
 
 export default data
