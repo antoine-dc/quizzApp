@@ -1,7 +1,8 @@
 # appquizz
 
 > Quizz version le plus grand concours des animateurs en VueJS 2x !! !!
-> Branch master
+> Branch dev !
+
 
 ## Build Setup
 
