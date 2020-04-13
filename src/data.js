@@ -208,6 +208,36 @@ let players = [
   new Player(4, "Amélie", theme4)
 ];
 
+const colors = [{
+    name: "Vert",
+    color: "#27ae60"
+  },
+  {
+    name: "Bleu",
+    color: "#3498db"
+  },
+  {
+    name: "Rouge",
+    color: "#e74c3c"
+  },
+  {
+    name: "Violet",
+    color: "#9b59b6"
+  },
+  {
+    name: "Gris",
+    color: "#95a5a6"
+  },
+  {
+    name: "Orange",
+    color: "#f39c12"
+  },
+  {
+    name: "Turquoise",
+    color: "#1abc9c"
+  }
+];
+
 
 let themes = [theme1, theme2, theme3, theme4, themeCG];
 
@@ -218,7 +248,8 @@ let sounds = {
 let data = {
   players,
   themes,
-  sounds
+  sounds,
+  colors
 }
 
 export default data

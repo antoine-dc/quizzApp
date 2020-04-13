@@ -18,48 +18,48 @@
           {{ this.theme.name }}
         </h1>
       </div>
-    </div>
-    <form>
-      <div class="form-group row">
-        <label for="name" class="col-sm-2 col-form-label">Nom du thème</label>
-        <div class="col-sm-10">
-          <input v-model="name" type="text" class="form-control" id="name" />
+      <form>
+        <div class="form-group row">
+          <label for="name" class="col-sm-2 col-form-label">Nom du thème</label>
+          <div class="col-sm-10">
+            <input v-model="name" type="text" class="form-control" id="name" />
+          </div>
         </div>
-      </div>
 
-      <fieldset class="form-group">
-        <div class="row">
-          <legend class="col-form-label col-sm-2 pt-0">Couleur</legend>
-          <div class="col-sm-10 d-inline-flex">
-            <div class="form-check" v-for="(color, index) in this.tabColor" :key="index + 1">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="gridRadios"
-                :value="color.color"
-                v-model="newColor"
-                :checked="newColor == color.color ? 'checked' : ''"
-              />
+        <fieldset class="form-group">
+          <div class="row">
+            <legend class="col-form-label col-sm-2 pt-0">Couleur</legend>
+            <div class="col-sm-10 d-inline-flex">
+              <div class="form-check" v-for="(color, index) in this.colors" :key="index + 1">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="gridRadios"
+                  :value="color.color"
+                  v-model="newColor"
+                  :checked="newColor == color.color ? 'checked' : ''"
+                />
 
-              <button
-                type="button"
-                class="btn"
-                :style="{
+                <button
+                  type="button"
+                  class="btn"
+                  :style="{
               backgroundColor: color.color,
               height: '50px'
             }"
-              >{{color.name}}</button>
+                >{{color.name}}</button>
+              </div>
             </div>
           </div>
-        </div>
-      </fieldset>
-    </form>
+        </fieldset>
+      </form>
+    </div>
 
     <hr class="mb-4" />
     <div class="row">
       <div class="col">
         <form>
-          <h2>Ajouter une question</h2>
+          <h2>Questions</h2>
           <div class="form-row">
             <div class="col">
               <input type="text" class="form-control" placeholder="Question" v-model="newQuestion" />
@@ -84,7 +84,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(question, index) in getQuestions" :key="index + 1" class="table-light">
+          <tr
+            v-for="(question, index) in this.questionsByTheme"
+            :key="index + 1"
+            class="table-light"
+          >
             <th scope="row">{{ index + 1 }}</th>
             <td :class="{editing:question === editingQuestion}">
               <label @dblclick="edit(question,'question')">{{ question.question }}</label>
@@ -146,7 +150,7 @@
 </template>
 
 <script>
-const tabColor = [
+const colors = [
   { name: "Vert", color: "#27ae60" },
   { name: "Bleu", color: "#3498db" },
   { name: "Rouge", color: "#e74c3c" },
@@ -166,8 +170,8 @@ export default {
       id: null,
       theme: Themes,
       themes: [],
-      questions: [],
-      tabColor: tabColor,
+      questionsByTheme: [],
+      colors: colors,
       newQuestion: null,
       newAnswer: null,
       name: null,
@@ -192,8 +196,8 @@ export default {
           this.theme.color
         )
       );
-      this.newQuestion = "Question";
-      this.newAnswer = "Réponse";
+      this.newQuestion = "";
+      this.newAnswer = "";
       this.save();
     },
     deleteQuestion(question) {
@@ -218,35 +222,32 @@ export default {
       this.save();
     },
     save() {
-      this.themes[this.id].name = this.name;
-      this.themes[this.id].color = this.newColor;
-      const parsed = JSON.stringify(this.themes);
-      localStorage.setItem("themes", parsed);
+      this.theme.name = this.name;
+      this.theme.color = this.newColor;
+      const parsed = JSON.stringify(this.datas);
+      localStorage.setItem("datas", parsed);
     }
   },
-  computed: {
-    getQuestions() {
-      if (localStorage.getItem("themes")) {
-        try {
-          this.themes = JSON.parse(localStorage.getItem("themes"));
-        } catch (e) {
-          localStorage.removeItem("themes");
-        }
-      } else {
-        // insertion des données initiales en local
-        this.themes = this.$parent.themes;
-      }
-
-      this.id = this.$route.params.id - 1;
-      this.theme = this.themes[this.id];
-      this.questions = this.theme.questions;
-
-      return this.questions;
-    }
-  },
+  computed: {},
   mounted() {
-    this.newColor = this.theme.color;
+    if (localStorage.getItem("datas")) {
+      try {
+        this.datas = JSON.parse(localStorage.getItem("datas"));
+      } catch (e) {
+        localStorage.removeItem("datas");
+      }
+    } else {
+      this.datas = this.$parent.datas;
+    }
 
+    // Init data
+    this.themes = this.datas.themes;
+
+    this.id = this.$route.params.id - 1;
+    this.theme = this.themes[this.id];
+    this.questionsByTheme = this.theme.questions;
+
+    this.newColor = this.theme.color;
     this.name = this.theme.name;
   },
   directives: {

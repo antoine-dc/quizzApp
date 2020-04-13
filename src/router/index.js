@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import Main from '@/components/Main2'
 import Admin from '@/components/Admin'
 import ManageTheme from '@/components/ManageTheme'
-import ManageQuestion from '@/components/ManageQuestion'
+import ManagePlayer from '@/components/ManagePlayer'
 import CircularCountDownTimer from "vue-circular-count-down-timer";
 
 Vue.use(Router)
@@ -26,8 +26,8 @@ export default new Router({
     name: 'theme',
     component: ManageTheme
   }, {
-    path: '/question/:id(\\d+)',
-    name: 'ManageQuestion',
-    component: ManageQuestion
+    path: '/player/:id(\\d+)',
+    name: 'ManagePlayer',
+    component: ManagePlayer
   }]
 })

@@ -11,9 +11,7 @@ export default {
   name: "App",
   data() {
     return {
-      themes: datas.themes,
-      players: datas.players,
-      sounds: datas.sounds
+      datas: datas
     };
   }
 };
