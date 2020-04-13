@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Main from '@/components/Main2'
+import Admin from '@/components/Admin'
+import ManageTheme from '@/components/ManageTheme'
+import ManageQuestion from '@/components/ManageQuestion'
 import CircularCountDownTimer from "vue-circular-count-down-timer";
 
 Vue.use(Router)
@@ -11,5 +14,20 @@ export default new Router({
     path: '/',
     name: 'Main',
     component: Main
+  }, {
+    path: '*' /*Si tu rencontres n'importe quoi */ ,
+    redirect: '/' /* tu seras alors redirigé vers la page d'accueil */
+  }, {
+    path: '/admin',
+    name: 'Admin',
+    component: Admin
+  }, {
+    path: '/theme/:id(\\d+)',
+    name: 'theme',
+    component: ManageTheme
+  }, {
+    path: '/question/:id(\\d+)',
+    name: 'ManageQuestion',
+    component: ManageQuestion
   }]
 })

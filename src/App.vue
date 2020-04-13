@@ -6,8 +6,16 @@
 </template>
 
 <script>
+import datas from "./data.js";
 export default {
-  name: "App"
+  name: "App",
+  data() {
+    return {
+      themes: datas.themes,
+      players: datas.players,
+      sounds: datas.sounds
+    };
+  }
 };
 </script>
 

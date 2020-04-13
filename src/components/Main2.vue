@@ -207,13 +207,13 @@
       </div>
     </div>
     <audio id="audio-final">
-      <source src="../assets/audio/success-fanfare-trumpets.wav" />
+      <source src="./../../static/audio/success-fanfare-trumpets.mp3" />
     </audio>
     <audio id="audio-success">
-      <source src="../assets/audio/success.mp3" />
+      <source src="./../../static/audio/success.mp3" />
     </audio>
     <audio id="audio-error">
-      <source src="../assets/audio/error.mp3" />
+      <source src="./../../static/audio/error.mp3" />
     </audio>
   </div>
 </template>
@@ -247,7 +247,7 @@ export default {
       countQuestions: 0,
       showModalEnd: false,
       timerStart: false,
-      initTimerModal: 20
+      initTimerModal: 1
     };
   },
   computed: {
@@ -301,14 +301,9 @@ export default {
     checkAnswer() {
       let goodAnswer = $("#checkAnswer").prop("checked");
       let idTheme = this.questionActive.theme.id;
-      console.log("----------------");
-
-      console.log("isStarted :" + this.isStarted);
-      console.log("timerStart :" + this.timerStart);
-      console.log("question.disabled :" + this.questionActive.disabled);
 
       if (goodAnswer) {
-        document.querySelector("#audio-success").play();
+        this.soundSuccess.play();
         if (idTheme === this.idActivePlayer) {
           // Si c'est le theme du joueur
           this.players[this.idActivePlayer - 1].totalPoints += 2;
@@ -320,7 +315,7 @@ export default {
           this.players[this.idActivePlayer - 1].totalPoints += 3;
         }
       } else {
-        document.querySelector("#audio-error").play();
+        this.soundError.play();
       }
 
       // On passe le tour au joueur suivant
@@ -341,19 +336,13 @@ export default {
 
       if (this.countQuestions === this.maxQuestions) {
         this.showModalEnd = true;
-        document.querySelector("#audio-final").play();
+        this.soundFinal.play();
       }
 
       // Initialisaiton du modal
       this.activeModal = false;
       this.showAnser = false;
       this.isChecked = false;
-
-      console.log("----------------");
-
-      console.log("isStarted :" + this.isStarted);
-      console.log("timerStart :" + this.timerStart);
-      console.log("question.disabled :" + this.questionActive.disabled);
     },
 
     reload() {
@@ -399,11 +388,15 @@ export default {
   updated: function() {
     let app = document.getElementById("app");
     window.scrollTo({ top: app.scrollHeight, behavior: "smooth" });
+  },
+  mounted() {
+    this.soundError = document.querySelector("#audio-error");
+    this.soundSuccess = document.querySelector("#audio-success");
+    this.soundFinal = document.querySelector("#audio-final");
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style>
-@import "../assets/css/style.css";
+<style scoped src="@/assets/css/style.css">
 </style>

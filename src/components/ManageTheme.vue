@@ -1,0 +1,318 @@
+<template>
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <router-link :to="{name:'Admin'}">
+            <a href="#">Dashboard</a>
+          </router-link>
+        </li>
+        <li class="breadcrumb-item active">{{ this.theme.name }}</li>
+      </ol>
+    </nav>
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <h1 class="display-4">
+          Thème
+          <br />
+          {{ this.theme.name }}
+        </h1>
+      </div>
+    </div>
+    <form>
+      <div class="form-group row">
+        <label for="name" class="col-sm-2 col-form-label">Nom du thème</label>
+        <div class="col-sm-10">
+          <input v-model="name" type="text" class="form-control" id="name" />
+        </div>
+      </div>
+
+      <fieldset class="form-group">
+        <div class="row">
+          <legend class="col-form-label col-sm-2 pt-0">Couleur</legend>
+          <div class="col-sm-10 d-inline-flex">
+            <div class="form-check" v-for="(color, index) in this.tabColor" :key="index + 1">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="gridRadios"
+                :value="color.color"
+                v-model="newColor"
+                :checked="newColor == color.color ? 'checked' : ''"
+              />
+
+              <button
+                type="button"
+                class="btn"
+                :style="{
+              backgroundColor: color.color,
+              height: '50px'
+            }"
+              >{{color.name}}</button>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+
+    <hr class="mb-4" />
+    <div class="row">
+      <div class="col">
+        <form>
+          <h2>Ajouter une question</h2>
+          <div class="form-row">
+            <div class="col">
+              <input type="text" class="form-control" placeholder="Question" v-model="newQuestion" />
+            </div>
+            <div class="col">
+              <input type="text" class="form-control" placeholder="Réponse" v-model="newAnswer" />
+            </div>
+            <button type="submit" class="btn btn-info" @click.prevent="addQuestion()">Ajouter</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <hr class="mb-4" />
+    <div class="row">
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Questions</th>
+            <th scope="col">Réponses</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(question, index) in getQuestions" :key="index + 1" class="table-light">
+            <th scope="row">{{ index + 1 }}</th>
+            <td :class="{editing:question === editingQuestion}">
+              <label @dblclick="edit(question,'question')">{{ question.question }}</label>
+              <input
+                type="text"
+                class="editQuestion"
+                v-model="question.question"
+                @keyup.enter="doneEdit('question')"
+                @blur="doneEdit('question')"
+                v-focus="question === editingQuestion"
+              />
+            </td>
+
+            <td :class="{editing:question === editingAnswer}">
+              <label @dblclick="edit(question,'answer')">{{ question.answer }}</label>
+              <input
+                type="text"
+                class="editQuestion"
+                v-model="question.answer"
+                @keyup.enter="doneEdit('answer')"
+                @blur="doneEdit('answer')"
+                v-focus="question === editingAnswer"
+              />
+            </td>
+
+            <td>
+              <div class="dropdown">
+                <a
+                  href="#"
+                  class="dropdown-ellipses dropdown-toggle"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <i class="fa fa-ellipsis-v"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" style>
+                  <a href="#!" class="dropdown-item" @click="edit(question,'question')">
+                    <i class="far fa-edit text-success"></i> Edit question
+                  </a>
+                  <a href="#!" class="dropdown-item" @click="edit(question,'answer')">
+                    <i class="far fa-edit text-warning"></i> Edit answer
+                  </a>
+                  <a href="#!" class="dropdown-item" @click.prevent="deleteQuestion(question)">
+                    <i class="far fa-trash-alt text-danger"></i> Delete
+                  </a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <router-link :to="{name:'Admin'}">
+      <button type="submit" class="btn btn-info" @click="save()">Enregistrer</button>
+    </router-link>
+  </div>
+</template>
+
+<script>
+const tabColor = [
+  { name: "Vert", color: "#27ae60" },
+  { name: "Bleu", color: "#3498db" },
+  { name: "Rouge", color: "#e74c3c" },
+  { name: "Violet", color: "#9b59b6" },
+  { name: "Gris", color: "#95a5a6" },
+  { name: "Orange", color: "#f39c12" },
+  { name: "Turquoise", color: "#1abc9c" }
+];
+/* Les classes */
+import Question from "../class/Question.js";
+import Themes from "../class/Themes";
+
+export default {
+  name: "AdminTheme",
+  data() {
+    return {
+      id: null,
+      theme: Themes,
+      themes: [],
+      questions: [],
+      tabColor: tabColor,
+      newQuestion: null,
+      newAnswer: null,
+      name: null,
+      newColor: null,
+      editingQuestion: null,
+      editingAnswer: null
+    };
+  },
+  methods: {
+    addQuestion() {
+      // s'assurer que l'utilisateur a entré quelque chose
+      if (!this.newQuestion || !this.newAnswer) {
+        return;
+      }
+
+      this.themes[this.id].questions.push(
+        new Question(
+          this.newQuestion,
+          this.newAnswer,
+          this.theme.id,
+          this.theme.name,
+          this.theme.color
+        )
+      );
+      this.newQuestion = "Question";
+      this.newAnswer = "Réponse";
+      this.save();
+    },
+    deleteQuestion(question) {
+      this.themes[this.id].questions = this.themes[this.id].questions.filter(
+        i => i !== question
+      );
+      this.save();
+    },
+    edit(question, type) {
+      if (type === "question") {
+        this.editingQuestion = question;
+      } else if (type === "answer") {
+        this.editingAnswer = question;
+      }
+    },
+    doneEdit(type) {
+      if (type === "question") {
+        this.editingQuestion = null;
+      } else if (type === "answer") {
+        this.editingAnswer = null;
+      }
+      this.save();
+    },
+    save() {
+      this.themes[this.id].name = this.name;
+      this.themes[this.id].color = this.newColor;
+      const parsed = JSON.stringify(this.themes);
+      localStorage.setItem("themes", parsed);
+    }
+  },
+  computed: {
+    getQuestions() {
+      if (localStorage.getItem("themes")) {
+        try {
+          this.themes = JSON.parse(localStorage.getItem("themes"));
+        } catch (e) {
+          localStorage.removeItem("themes");
+        }
+      } else {
+        // insertion des données initiales en local
+        this.themes = this.$parent.themes;
+      }
+
+      this.id = this.$route.params.id - 1;
+      this.theme = this.themes[this.id];
+      this.questions = this.theme.questions;
+
+      return this.questions;
+    }
+  },
+  mounted() {
+    this.newColor = this.theme.color;
+
+    this.name = this.theme.name;
+  },
+  directives: {
+    focus(el, val) {
+      if (val) {
+        el.focus();
+      }
+    }
+  }
+};
+</script>
+
+<style scoped>
+.d-inline-flex > div {
+  width: 20%;
+}
+.dropdown-toggle::after {
+  display: none;
+}
+
+.dropdown-ellipses {
+  color: #d2ddec;
+}
+
+.dropdown-ellipses:hover {
+  color: #138496;
+}
+
+label {
+  width: 100%;
+  display: inline-table;
+  min-height: 17px;
+}
+
+.editQuestion {
+  display: none;
+  position: relative;
+  margin: 0;
+  width: 100%;
+  font-family: inherit;
+  font-weight: inherit;
+  line-height: 1.4em;
+  border: 0;
+  color: inherit;
+  padding: 6px;
+  border: 1px solid #999;
+  box-shadow: inset 0 -1px 5px 0 rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+  text-align: center;
+
+  padding: 12px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.editing {
+  border-bottom: none;
+  padding: 0;
+}
+
+.editing .editQuestion {
+  display: block;
+  width: calc(100% - 43px);
+  margin: 0 0 0.5rem 43px;
+}
+.editing label {
+  display: none;
+}
+</style>
