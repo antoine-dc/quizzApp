@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <main class="container">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
@@ -146,7 +146,7 @@
     <router-link :to="{name:'Admin'}">
       <button type="submit" class="btn btn-info" @click="save()">Enregistrer</button>
     </router-link>
-  </div>
+  </main>
 </template>
 
 <script>

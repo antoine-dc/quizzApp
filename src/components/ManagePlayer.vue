@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <main class="container">
     <h1 class="display-4">{{ this.player.namePlayer }}</h1>
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
@@ -68,7 +68,7 @@
         </div>
       </div>
     </form>
-  </div>
+  </main>
 </template>
 
 <script>

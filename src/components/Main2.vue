@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <main class="container">
     <h1>{{ msg }}</h1>
 
     <div class="row">
@@ -215,7 +215,7 @@
     <audio id="audio-error">
       <source src="./../../static/audio/error.mp3" />
     </audio>
-  </div>
+  </main>
 </template>
 
 <script>
@@ -398,5 +398,5 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped src="@/assets/css/style.css">
+<style scoped >
 </style>

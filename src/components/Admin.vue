@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <main class="container">
     <h1>Dashboard</h1>
 
     <!-- Section PLAYER -->
@@ -157,7 +157,7 @@
       </div>
     </section>
     <!-- END Section Themes -->
-  </div>
+  </main>
 </template>
 
 <script>
@@ -187,6 +187,8 @@ export default {
     } else {
       this.datas = this.$parent.datas;
     }
+
+    console.log(this.datas);
 
     // Init data
     this.themes = this.datas.themes;

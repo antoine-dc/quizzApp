@@ -2,6 +2,24 @@
 
 * {
   font-family: "Oswald", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+table *,
+form * {
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: #ecf0f1;
+}
+
+#app {
+  text-align: center;
+  color: #2c3e50;
 }
 
 h1,
@@ -23,6 +41,10 @@ a {
   color: #42b983;
 }
 
+main {
+  margin: 60px auto;
+}
+
 .row+.row {
   margin-top: 1em;
 }
@@ -41,7 +63,7 @@ a {
   font-size: 1.5em;
 }
 
-.show {
+.modal.show {
   display: block;
   background-color: #00000080;
 }

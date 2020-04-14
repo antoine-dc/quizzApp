@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <headerNav></headerNav>
     <img src="./assets/logo.png" />
     <router-view />
   </div>
@@ -7,26 +8,19 @@
 
 <script>
 import datas from "./data.js";
+import headerNav from "@/components/Header";
 export default {
   name: "App",
   data() {
     return {
       datas: datas
     };
+  },
+  components: {
+    headerNav
   }
 };
 </script>
 
-<style>
-body {
-  background-color: #ecf0f1;
-}
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin: 60px 0;
-}
+<style src="@/assets/css/style.css">
 </style>
