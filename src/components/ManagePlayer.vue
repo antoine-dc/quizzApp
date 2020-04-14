@@ -26,8 +26,9 @@
           <select class="custom-select" id="inputGroupSelect01" v-model="newTheme">
             <option
               v-for="(theme,index) in this.datas.themes"
-              :key="index+1"
-              :selected="theme.name === player.theme.name ? 'selected' : ''"
+              :key="index"
+              :value="theme"
+              :selected="index === idTheme ? 'selected' : ''"
             >{{theme.name}}</option>
           </select>
         </div>
@@ -36,22 +37,22 @@
       <fieldset class="form-group">
         <div class="row">
           <legend class="col-form-label col-sm-2 pt-0">Couleur</legend>
-          <div class="col-sm-10 d-inline-flex">
+          <div class="col-sm-10 flex-column d-flex align-items-start">
             <div class="form-check" v-for="(color, index) in this.datas.colors" :key="index + 1">
               <input
                 class="form-check-input"
                 type="radio"
                 name="gridRadios"
-                :value="color.color"
+                :value="color"
                 v-model="newColor"
-                :checked="newColor == color.color ? 'checked' : ''"
+                :checked="newColor == color.code ? 'checked' : ''"
               />
 
               <button
                 type="button"
                 class="btn"
                 :style="{
-              backgroundColor: color.color,
+              backgroundColor: color.code,
               height: '50px'
             }"
               >{{color.name}}</button>
@@ -85,7 +86,8 @@ export default {
       name: null,
       player: [],
       newColor: null,
-      newTheme: null
+      newTheme: null,
+      idTheme: null
     };
   },
   mounted() {
@@ -105,14 +107,15 @@ export default {
     this.id = this.$route.params.id - 1;
     this.player = this.players[this.id];
     this.name = this.player.namePlayer;
-    this.newColor = this.player.theme.color;
-    this.newTheme = this.player.theme.name;
+    this.newColor = this.player.color;
+    this.newTheme = this.player.theme;
+    this.idTheme = this.datas.themes.indexOf(this.player.theme);
   },
   methods: {
     save() {
       this.player.namePlayer = this.name;
-      this.player.theme.color = this.newColor;
-      this.player.theme.name = this.newTheme;
+      this.player.color = this.newColor;
+      this.player.theme = this.newTheme;
       const parsed = JSON.stringify(this.datas);
       localStorage.setItem("datas", parsed);
     }
@@ -128,5 +131,11 @@ export default {
 .breadcrumb-item + .breadcrumb-item::before {
   content: ">";
 }
-</style
->>
+.form-check {
+  margin-bottom: 5px;
+}
+
+.form-check .btn {
+  width: 100px;
+}
+</style>

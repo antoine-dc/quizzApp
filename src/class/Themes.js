@@ -1,8 +1,7 @@
 export default class Themes {
-  constructor(id, name, color = '', questions = []) {
-    (this.id = id),
+  constructor(name, questions = [], isThemeGeneralCulture = false) {
     (this.name = name),
-    (this.color = color),
-    (this.questions = questions);
+    (this.questions = questions),
+    (this.isThemeGeneralCulture = isThemeGeneralCulture);
   }
 }

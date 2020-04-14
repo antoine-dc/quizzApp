@@ -46,9 +46,9 @@
                   type="button"
                   class="btn text-white"
                   :style="{
-              backgroundColor: player.theme.color
+              backgroundColor: player.color.code
             }"
-                >{{player.theme.color}}</button>
+                >{{player.color.name}}</button>
               </td>
               <td>
                 <div class="dropdown">
@@ -110,8 +110,7 @@
             <tr>
               <th scope="col">#</th>
               <th scope="col">Nom</th>
-              <th scope="col">Couleur</th>
-
+              <th scope="col">Nb questions</th>
               <th scope="col"></th>
             </tr>
           </thead>
@@ -119,15 +118,7 @@
             <tr v-for="(theme,index) in this.datas.themes" :key="index+1" class="table-light">
               <th scope="row">{{index+1}}</th>
               <td>{{theme.name}}</td>
-              <td>
-                <button
-                  type="button"
-                  class="btn text-white"
-                  :style="{
-              backgroundColor: theme.color
-            }"
-                >{{theme.color}}</button>
-              </td>
+              <td>{{theme.questions.length}}/{{theme.isThemeGeneralCulture ? '16' : '8'}}</td>
               <td>
                 <div class="dropdown">
                   <a
@@ -215,7 +206,7 @@ export default {
       this.datas.players.push({
         idPlayer: Date.now(),
         namePlayer: this.newPlayer,
-        theme: { color: "#000000" }
+        theme: { color: "#FFFFFF" }
       });
       this.newPlayer = "";
       this.save();

@@ -30,21 +30,21 @@
           <div class="row">
             <legend class="col-form-label col-sm-2 pt-0">Couleur</legend>
             <div class="col-sm-10 d-inline-flex">
-              <div class="form-check" v-for="(color, index) in this.colors" :key="index + 1">
+              <div class="form-check" v-for="(color, index) in this.datas.colors" :key="index + 1">
                 <input
                   class="form-check-input"
                   type="radio"
                   name="gridRadios"
-                  :value="color.color"
+                  :value="color"
                   v-model="newColor"
-                  :checked="newColor == color.color ? 'checked' : ''"
+                  :checked="newColor == color.code ? 'checked' : ''"
                 />
 
                 <button
                   type="button"
                   class="btn"
                   :style="{
-              backgroundColor: color.color,
+              backgroundColor: color.code,
               height: '50px'
             }"
                 >{{color.name}}</button>
@@ -150,15 +150,6 @@
 </template>
 
 <script>
-const colors = [
-  { name: "Vert", color: "#27ae60" },
-  { name: "Bleu", color: "#3498db" },
-  { name: "Rouge", color: "#e74c3c" },
-  { name: "Violet", color: "#9b59b6" },
-  { name: "Gris", color: "#95a5a6" },
-  { name: "Orange", color: "#f39c12" },
-  { name: "Turquoise", color: "#1abc9c" }
-];
 /* Les classes */
 import Question from "../class/Question.js";
 import Themes from "../class/Themes";

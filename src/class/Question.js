@@ -1,11 +1,8 @@
 export default class Question {
-  constructor(question, answer, idTheme, nameTheme, colorTheme, disabled = true) {
-    (this.question = question),
+  constructor(label, answer, theme, disabled = true) {
+    (this.label = label),
     (this.answer = answer),
-    (this.theme = {
-      id: idTheme,
-      name: nameTheme,
-      color: colorTheme
-    }), (this.disabled = disabled);
+    (this.theme = theme),
+    (this.disabled = disabled);
   }
 }

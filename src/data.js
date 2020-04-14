@@ -1,7 +1,8 @@
 import Themes from "./class/Themes.js";
 import Player from "./class/Player.js";
+import Color from "./class/Color.js";
 
-let theme1 = new Themes(1, "Martin Luther King", "#3498db", [{
+let theme1 = new Themes("Martin Luther King", [{
     question: "Citez son discours célébre ?",
     answer: "I have a dream"
   },
@@ -35,7 +36,7 @@ let theme1 = new Themes(1, "Martin Luther King", "#3498db", [{
   }
 ]);
 
-let theme2 = new Themes(2, "8 miles", "#e74c3c", [{
+let theme2 = new Themes("8 miles", [{
     question: "En quelle année est sortie le film? ",
     answer: "Le film est sorti en 2002"
   },
@@ -69,7 +70,7 @@ let theme2 = new Themes(2, "8 miles", "#e74c3c", [{
   }
 ]);
 
-let theme3 = new Themes(3, "Friends", "#2ecc71", [{
+let theme3 = new Themes("Friends", [{
     question: " Quel est l'événement survenu sur une plage que Chandler, Joey et Monica refusent de révéler aux autres, avant de craquer ?",
     answer: "Monica s'est fait piquer par une méduse et Chandler a dû lui uriner dessus pour calmer la douleur"
   },
@@ -102,7 +103,7 @@ let theme3 = new Themes(3, "Friends", "#2ecc71", [{
     answer: "Un singe baptisé Marcel"
   }
 ]);
-let theme4 = new Themes(4, "Permaculture", "#9b59b6", [{
+let theme4 = new Themes("Permaculture", [{
     question: "Quelle est l'expression américaine à l'origine du mot ?",
     answer: "Il est issu de l'expression américaine « permanent agriculture »"
   },
@@ -135,7 +136,7 @@ let theme4 = new Themes(4, "Permaculture", "#9b59b6", [{
     answer: "La zone 3 correspond aux pâturages et aux céréales. Cette production tend à être plus orientée vers la vente"
   }
 ]);
-let themeCG = new Themes(0, "Culture Générale", "#95a5a6", [{
+let themeCG = new Themes("Culture Générale", [{
     question: "Quel est le plus long fleuve d'Europe occidentale ?",
     answer: " Le Rhin"
   },
@@ -199,43 +200,24 @@ let themeCG = new Themes(0, "Culture Générale", "#95a5a6", [{
     question: "Avec la Belgique et le Luxembourg, quel pays forme le Benelux ?",
     answer: "Les Pays-Bas"
   }
-]);
+], true);
 
 let players = [
-  new Player(1, "Claire", theme1, true),
-  new Player(2, "Baptiste", theme2),
-  new Player(3, "Clarisse", theme3),
-  new Player(4, "Amélie", theme4)
+  new Player(1, "Claire", theme1, new Color("Turquoise", "#1abc9c"), true),
+  new Player(2, "Baptiste", theme2, new Color("Emerland", "#2ecc71")),
+  new Player(3, "Clarisse", theme3, new Color("PeterRiver", "#3498db")),
+  new Player(4, "Amélie", theme4, new Color("Amethyst", "#9b59b6"))
 ];
 
-const colors = [{
-    name: "Vert",
-    color: "#27ae60"
-  },
-  {
-    name: "Bleu",
-    color: "#3498db"
-  },
-  {
-    name: "Rouge",
-    color: "#e74c3c"
-  },
-  {
-    name: "Violet",
-    color: "#9b59b6"
-  },
-  {
-    name: "Gris",
-    color: "#95a5a6"
-  },
-  {
-    name: "Orange",
-    color: "#f39c12"
-  },
-  {
-    name: "Turquoise",
-    color: "#1abc9c"
-  }
+const colors = [
+  new Color("Turquoise", "#1abc9c"),
+  new Color("Emerland", "#2ecc71"),
+  new Color("PeterRiver", "#3498db"),
+  new Color("Amethyst", "#9b59b6"),
+  new Color("Alizarin", "#e74c3c"),
+  new Color("Carot", "#e67e22"),
+  new Color("SunFlower", "#f1c40f"),
+  new Color("Concrete", "#95a5a6")
 ];
 
 
