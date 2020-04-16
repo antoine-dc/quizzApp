@@ -81,10 +81,71 @@ const colors = [
 
 let themes = [theme1, theme2, theme3, theme4, themeCG];
 
+const sounds = [{
+    path: "roll.wav",
+    type: "roll"
+  },
+  {
+    path: "success-fanfare-trumpets.mp3",
+    type: "final"
+  },
+  {
+    path: "correct.mp3",
+    type: "success"
+  },
+  {
+    path: "success.mp3",
+    type: "success"
+  },
+  {
+    path: "yeah4.wav",
+    type: "success"
+  },
+  {
+    path: "yeah2.wav",
+    type: "success"
+  },
+  {
+    path: "yeah3.wav",
+    type: "success"
+  },
+  {
+    path: "yes.wav",
+    type: "success"
+  },
+  {
+    path: "error.mp3",
+    type: "error"
+  },
+  {
+    path: "fail.wav",
+    type: "error"
+  },
+  {
+    path: "loose.wav",
+    type: "error"
+  },
+  {
+    path: "no.wav",
+    type: "error"
+  },
+  {
+    path: "no-sir.wav",
+    type: "error"
+  },
+  {
+    path: "oh-no.wav",
+    type: "error"
+  }
+
+];
+
+
 let data = {
   /*players,
   themes,*/
-  colors
+  colors,
+  sounds
 }
 
 export default data

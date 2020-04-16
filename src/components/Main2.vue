@@ -205,17 +205,8 @@
         </div>
       </div>
     </div>
-    <audio id="audio-final">
-      <source src="./../../static/audio/success-fanfare-trumpets.mp3" />
-    </audio>
-    <audio id="audio-success">
-      <source src="./../../static/audio/success.mp3" />
-    </audio>
-    <audio id="audio-error">
-      <source src="./../../static/audio/error.mp3" />
-    </audio>
-    <audio id="audio-roll">
-      <source src="./../../static/audio/roll.wav" />
+    <audio v-for="(audio, index) in this.datas.sounds" :key="index" :id="'audio-'+audio.type+index">
+      <source :src="'./../../static/audio/'+audio.type+'/'+audio.path" />
     </audio>
   </main>
 </template>
@@ -242,7 +233,7 @@ export default {
       questionActive: null,
       showAnser: false,
       isChecked: false,
-      maxQuestions: 5,
+      maxQuestions: 2,
       countQuestions: 0,
       showModalEnd: false,
       timerStart: false,
@@ -315,7 +306,8 @@ export default {
       let playerActive = this.players[this.idActivePlayer - 1];
 
       if (goodAnswer) {
-        this.soundSuccess.play();
+        let soundSuccessRandom = _.shuffle(this.soundSuccess)[0];
+        document.querySelector(soundSuccessRandom).play();
         if (this.questionActive.indexPlayer === this.idActivePlayer) {
           // Si c'est le theme du joueur
           playerActive.totalPoints += 2;
@@ -327,7 +319,8 @@ export default {
           playerActive.totalPoints += 3;
         }
       } else {
-        this.soundError.play();
+        let soundErrorRandom = _.shuffle(this.soundError)[0];
+        document.querySelector(soundErrorRandom).play();
       }
 
       // On passe le tour au joueur suivant
@@ -349,12 +342,12 @@ export default {
       if (this.countQuestions === this.maxQuestions) {
         this.sleep(2000)
           .then(() => {
-            this.soundRoll.play();
+            document.querySelector("#audio-roll0").play();
           })
           .then(() => {
             this.sleep(4000).then(() => {
               this.showModalEnd = true;
-              this.soundFinal.play();
+              document.querySelector("#audio-final1").play();
             });
           });
       }
@@ -414,11 +407,6 @@ export default {
     window.scrollTo({ top: app.scrollHeight, behavior: "smooth" });
   },
   mounted() {
-    this.soundError = document.querySelector("#audio-error");
-    this.soundSuccess = document.querySelector("#audio-success");
-    this.soundFinal = document.querySelector("#audio-final");
-    this.soundRoll = document.querySelector("#audio-roll");
-
     if (localStorage.getItem("datas")) {
       try {
         this.datas = JSON.parse(localStorage.getItem("datas"));
@@ -433,7 +421,26 @@ export default {
       // Faire ici message erreur si le cas se présente
     }
 
-    console.log(this.datas);
+    this.datas.sounds = this.$parent.datas.sounds;
+
+    // Init sounds
+    this.soundError = document.querySelector("#audio-error");
+    this.soundSuccess = document.querySelector("#audio-success");
+    this.soundFinal = document.querySelector("#audio-final1");
+    this.soundRoll = document.querySelector("#audio-roll0");
+
+    console.log(this.soundFinal);
+    console.log(this.soundRoll);
+
+    this.soundSuccess = [];
+    this.soundError = [];
+    for (const [index, sound] of this.datas.sounds.entries()) {
+      if (sound.type === "success") {
+        this.soundSuccess.push(`#audio-${sound.type}${index}`);
+      } else if (sound.type === "error") {
+        this.soundError.push(`#audio-${sound.type}${index}`);
+      }
+    }
 
     // Init data
     this.themes = this.datas.themes;
