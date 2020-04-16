@@ -1,8 +1,7 @@
 export default class Question {
-  constructor(label, answer, theme, disabled = true) {
+  constructor(label, answer, disabled = true) {
     (this.label = label),
     (this.answer = answer),
-    (this.theme = theme),
     (this.disabled = disabled);
   }
 }

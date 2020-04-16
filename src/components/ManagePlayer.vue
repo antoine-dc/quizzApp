@@ -102,10 +102,8 @@ export default {
     }
 
     // Init data
-    this.players = this.datas.players;
-
     this.id = this.$route.params.id - 1;
-    this.player = this.players[this.id];
+    this.player = this.datas.players[this.id];
     this.name = this.player.namePlayer;
     this.newColor = this.player.color;
     this.newTheme = this.player.theme;

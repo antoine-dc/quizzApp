@@ -57,4 +57,8 @@ header {
 .p-4 {
   text-transform: uppercase;
 }
+
+header a:hover {
+  color: #fff;
+}
 </style>

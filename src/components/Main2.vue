@@ -20,7 +20,7 @@
         :key="index"
         class="col-md-2 card"
         :style="{ backgroundColor: getBgQuestion(question) }"
-        @click.prevent="question.disabled && !timerStart ? chooseQuestion(question) : {}"
+        @click.prevent="question.data.disabled && !timerStart ? chooseQuestion(question) : {}"
       >
         <div class="card-body">
           <p class="card-text" :style="{ 'color': getColorQuestion(question) }">{{ index + 1 }}</p>
@@ -56,8 +56,7 @@
           class="card"
           :id="'player-' + player.idPlayer"
           :class="{ pulse: player.isActive && !timerStart }"
-          :style="[{ 'background-color': player.theme.color }]"
-          :data-idPlayer="player.theme.id"
+          :style="[{ 'background-color': player.color.code }]"
           @change="idActivePlayer"
         >
           <div class="card-body">
@@ -87,17 +86,17 @@
           class="modal-content"
           :style="[
             questionActive !== null
-              ? { 'background-color': questionActive.theme.color }
+              ? { 'background-color': questionActive.color }
               : {}
           ]"
         >
           <div class="modal-header">
-            <h5 class="modal-title">{{ questionActive !== null ? questionActive.theme.name : "" }}</h5>
+            <h5 class="modal-title">{{ questionActive !== null ? questionActive.nameTheme : "" }}</h5>
           </div>
-          <div class="modal-body">{{ questionActive !== null ? questionActive.question : "" }}</div>
+          <div class="modal-body">{{ questionActive !== null ? questionActive.data.label : "" }}</div>
 
           <div class="modal-footer answer" :class="'answer-' + 0" v-show="showAnser">
-            {{ questionActive !== null ? questionActive.answer : "" }}
+            {{ questionActive !== null ? questionActive.data.answer : "" }}
             <div class="row">
               <div class="col-md">
                 <form>
@@ -185,11 +184,11 @@
                       :aria-valuemax="getBestScore"
                       :style="{
                         height: (100 * player.totalPoints) / getBestScore + '%',
-                        backgroundColor: player.theme.color
+                        backgroundColor: player.color.code
                       }"
                     >{{ player.totalPoints }}</div>
                   </div>
-                  <h5 :style="{ color: player.theme.color }">{{ player.namePlayer }}</h5>
+                  <h5 :style="{ color: player.color.code }">{{ player.namePlayer }}</h5>
                 </div>
               </transition-group>
             </div>
@@ -215,17 +214,17 @@
     <audio id="audio-error">
       <source src="./../../static/audio/error.mp3" />
     </audio>
+    <audio id="audio-roll">
+      <source src="./../../static/audio/roll.wav" />
+    </audio>
   </main>
 </template>
 
 <script>
 /* Les classes */
 import Question from "../class/Question.js";
-import datas from "../data.js";
 
 /* Les components */
-import question from "@/components/Question";
-import player from "@/components/Player";
 
 /* Init */
 
@@ -234,16 +233,16 @@ export default {
   data() {
     return {
       msg: "App Quizz Theme",
+      datas: [],
       isStarted: false,
-      themes: datas.themes,
-      players: datas.players,
-      sounds: datas.sounds,
+      themes: [],
+      players: [],
       idActivePlayer: 1,
       activeModal: false,
       questionActive: null,
       showAnser: false,
       isChecked: false,
-      maxQuestions: 48,
+      maxQuestions: 5,
       countQuestions: 0,
       showModalEnd: false,
       timerStart: false,
@@ -255,19 +254,32 @@ export default {
     // Return an array of object Question
     getQuestions() {
       let tabQuestions = [];
-      this.themes.forEach(theme => {
-        theme.questions.forEach(q => {
-          tabQuestions.push(
-            new Question(
-              q.question,
-              q.answer,
-              theme.id,
-              theme.name,
-              theme.color
-            )
-          );
-        });
-      });
+      this.datas.players.forEach(player => {});
+
+      // Loop on all players
+      for (const [indexPlayer, player] of this.datas.players.entries()) {
+        for (const question of player.theme.questions) {
+          tabQuestions.push({
+            data: question,
+            color: player.color.code,
+            nameTheme: player.theme.name,
+            indexPlayer: indexPlayer + 1
+          });
+        }
+      }
+
+      // Add questions General Culture
+      for (const theme of this.datas.themes) {
+        if (theme.isThemeGeneralCulture) {
+          for (const question of theme.questions) {
+            tabQuestions.push({
+              data: question,
+              color: "#95A5A6", //grey
+              indexPlayer: 0
+            });
+          }
+        }
+      }
 
       return _.shuffle(tabQuestions); // use lodash
     },
@@ -300,28 +312,28 @@ export default {
     },
     checkAnswer() {
       let goodAnswer = $("#checkAnswer").prop("checked");
-      let idTheme = this.questionActive.theme.id;
+      let playerActive = this.players[this.idActivePlayer - 1];
 
       if (goodAnswer) {
         this.soundSuccess.play();
-        if (idTheme === this.idActivePlayer) {
+        if (this.questionActive.indexPlayer === this.idActivePlayer) {
           // Si c'est le theme du joueur
-          this.players[this.idActivePlayer - 1].totalPoints += 2;
-        } else if (idTheme === 0) {
+          playerActive.totalPoints += 2;
+        } else if (this.questionActive.indexPlayer === 0) {
           // Si c'est le theme Culture Général
-          this.players[this.idActivePlayer - 1].totalPoints += 1;
+          playerActive.totalPoints += 1;
         } else {
           // Si c'est le theme d'un autre
-          this.players[this.idActivePlayer - 1].totalPoints += 3;
+          playerActive.totalPoints += 3;
         }
       } else {
         this.soundError.play();
       }
 
       // On passe le tour au joueur suivant
-      this.players[this.idActivePlayer - 1].isActive = false;
+      playerActive.isActive = false;
 
-      if (this.idActivePlayer < datas.players.length) {
+      if (this.idActivePlayer < this.players.length) {
         this.idActivePlayer++;
       } else {
         this.idActivePlayer = 1;
@@ -335,8 +347,16 @@ export default {
       this.countQuestions++;
 
       if (this.countQuestions === this.maxQuestions) {
-        this.showModalEnd = true;
-        this.soundFinal.play();
+        this.sleep(2000)
+          .then(() => {
+            this.soundRoll.play();
+          })
+          .then(() => {
+            this.sleep(4000).then(() => {
+              this.showModalEnd = true;
+              this.soundFinal.play();
+            });
+          });
       }
 
       // Initialisaiton du modal
@@ -364,9 +384,9 @@ export default {
       let bg;
 
       if (this.timerStart) {
-        bg = question.theme.color;
+        bg = question.color;
       } else if (question.disabled === false) {
-        bg = question.theme.color;
+        bg = question.color;
       } else {
         bg = "#34495e"; // Couleur neutre
       }
@@ -375,14 +395,18 @@ export default {
     },
     getColorQuestion(question) {
       if (question.disabled === false) {
-        return question.theme.color;
+        return question.color;
       }
     },
     finishTimerStart() {
       this.timerStart = false;
     },
-    initTimerModalF() {
-      return this.initTimerModal;
+    sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    },
+    save() {
+      const parsed = JSON.stringify(this.datas);
+      localStorage.setItem("datas", parsed);
     }
   },
   updated: function() {
@@ -393,6 +417,27 @@ export default {
     this.soundError = document.querySelector("#audio-error");
     this.soundSuccess = document.querySelector("#audio-success");
     this.soundFinal = document.querySelector("#audio-final");
+    this.soundRoll = document.querySelector("#audio-roll");
+
+    if (localStorage.getItem("datas")) {
+      try {
+        this.datas = JSON.parse(localStorage.getItem("datas"));
+      } catch (e) {
+        localStorage.removeItem("datas");
+      }
+    } else {
+      // DEV
+      // this.datas = this.$parent.datas;
+      // this.save();
+      // TODO
+      // Faire ici message erreur si le cas se présente
+    }
+
+    console.log(this.datas);
+
+    // Init data
+    this.themes = this.datas.themes;
+    this.players = this.datas.players;
   }
 };
 </script>

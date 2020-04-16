@@ -154,7 +154,12 @@
 <script>
 /* Les classes */
 import Question from "../class/Question.js";
-import Themes from "../class/Themes";
+import Themes from "../class/Themes.js";
+import Player from "../class/Player.js";
+import Color from "../class/Color.js";
+
+// TODO
+// Gestion du thème qui sera Culture Général !!
 
 export default {
   name: "Admin",
@@ -176,10 +181,15 @@ export default {
         localStorage.removeItem("datas");
       }
     } else {
-      this.datas = this.$parent.datas;
-    }
+      // EN DEV
+      // this.datas = this.$parent.datas;
 
-    console.log(this.datas);
+      this.datas = {
+        players: [],
+        themes: [],
+        colors: this.$parent.datas.colors
+      };
+    }
 
     // Init data
     this.themes = this.datas.themes;
@@ -192,7 +202,7 @@ export default {
         return;
       }
 
-      this.datas.themes.push(new Themes(Date.now(), this.newTheme));
+      this.datas.themes.push(new Themes(this.newTheme));
       this.newTheme = "";
       this.save();
     },
@@ -203,11 +213,9 @@ export default {
         return;
       }
 
-      this.datas.players.push({
-        idPlayer: Date.now(),
-        namePlayer: this.newPlayer,
-        theme: { color: "#FFFFFF" }
-      });
+      this.datas.players.push(
+        new Player(Date.now(), this.newPlayer, [], this.datas.colors[0])
+      );
       this.newPlayer = "";
       this.save();
     },

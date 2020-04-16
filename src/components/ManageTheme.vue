@@ -25,33 +25,6 @@
             <input v-model="name" type="text" class="form-control" id="name" />
           </div>
         </div>
-
-        <fieldset class="form-group">
-          <div class="row">
-            <legend class="col-form-label col-sm-2 pt-0">Couleur</legend>
-            <div class="col-sm-10 d-inline-flex">
-              <div class="form-check" v-for="(color, index) in this.datas.colors" :key="index + 1">
-                <input
-                  class="form-check-input"
-                  type="radio"
-                  name="gridRadios"
-                  :value="color"
-                  v-model="newColor"
-                  :checked="newColor == color.code ? 'checked' : ''"
-                />
-
-                <button
-                  type="button"
-                  class="btn"
-                  :style="{
-              backgroundColor: color.code,
-              height: '50px'
-            }"
-                >{{color.name}}</button>
-              </div>
-            </div>
-          </div>
-        </fieldset>
       </form>
     </div>
 
@@ -62,7 +35,7 @@
           <h2>Questions</h2>
           <div class="form-row">
             <div class="col">
-              <input type="text" class="form-control" placeholder="Question" v-model="newQuestion" />
+              <input type="text" class="form-control" placeholder="Question" v-model="newLabel" />
             </div>
             <div class="col">
               <input type="text" class="form-control" placeholder="Réponse" v-model="newAnswer" />
@@ -85,17 +58,17 @@
         </thead>
         <tbody>
           <tr
-            v-for="(question, index) in this.questionsByTheme"
+            v-for="(question, index) in this.theme.questions"
             :key="index + 1"
             class="table-light"
           >
             <th scope="row">{{ index + 1 }}</th>
             <td :class="{editing:question === editingQuestion}">
-              <label @dblclick="edit(question,'question')">{{ question.question }}</label>
+              <label @dblclick="edit(question,'question')">{{ question.label }}</label>
               <input
                 type="text"
                 class="editQuestion"
-                v-model="question.question"
+                v-model="question.label"
                 @keyup.enter="doneEdit('question')"
                 @blur="doneEdit('question')"
                 v-focus="question === editingQuestion"
@@ -160,13 +133,9 @@ export default {
     return {
       id: null,
       theme: Themes,
-      themes: [],
-      questionsByTheme: [],
-      colors: colors,
-      newQuestion: null,
+      newLabel: null,
       newAnswer: null,
       name: null,
-      newColor: null,
       editingQuestion: null,
       editingAnswer: null
     };
@@ -174,27 +143,19 @@ export default {
   methods: {
     addQuestion() {
       // s'assurer que l'utilisateur a entré quelque chose
-      if (!this.newQuestion || !this.newAnswer) {
+      if (!this.newLabel || !this.newAnswer) {
         return;
       }
+      console.log(this.theme.questions);
 
-      this.themes[this.id].questions.push(
-        new Question(
-          this.newQuestion,
-          this.newAnswer,
-          this.theme.id,
-          this.theme.name,
-          this.theme.color
-        )
-      );
-      this.newQuestion = "";
+      this.theme.questions.push(new Question(this.newLabel, this.newAnswer));
+      console.log(this.theme.questions);
+      this.newLabel = "";
       this.newAnswer = "";
       this.save();
     },
     deleteQuestion(question) {
-      this.themes[this.id].questions = this.themes[this.id].questions.filter(
-        i => i !== question
-      );
+      this.theme.questions = this.theme.questions.filter(i => i !== question);
       this.save();
     },
     edit(question, type) {
@@ -214,7 +175,14 @@ export default {
     },
     save() {
       this.theme.name = this.name;
-      this.theme.color = this.newColor;
+      this.datas.themes[this.id] = this.theme;
+
+      // Boucle pour mettre à jour le thème d'un joueur si le thème a déjà été sélectionné
+      for (const player of this.datas.players) {
+        if (player.theme.id === this.theme.id) {
+          player.theme = this.theme;
+        }
+      }
       const parsed = JSON.stringify(this.datas);
       localStorage.setItem("datas", parsed);
     }
@@ -232,13 +200,8 @@ export default {
     }
 
     // Init data
-    this.themes = this.datas.themes;
-
     this.id = this.$route.params.id - 1;
-    this.theme = this.themes[this.id];
-    this.questionsByTheme = this.theme.questions;
-
-    this.newColor = this.theme.color;
+    this.theme = this.datas.themes[this.id];
     this.name = this.theme.name;
   },
   directives: {

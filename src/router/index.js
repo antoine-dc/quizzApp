@@ -1,9 +1,9 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Main from '@/components/Main2'
-import Admin from '@/components/Admin'
-import ManageTheme from '@/components/ManageTheme'
-import ManagePlayer from '@/components/ManagePlayer'
+import Vue from 'vue';
+import Router from 'vue-router';
+import Main from '@/components/Main2';
+import Admin from '@/components/Admin';
+import ManageTheme from '@/components/ManageTheme';
+import ManagePlayer from '@/components/ManagePlayer';
 import CircularCountDownTimer from "vue-circular-count-down-timer";
 
 Vue.use(Router)
