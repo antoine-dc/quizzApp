@@ -13,7 +13,9 @@
     <nav class="navbar navbar-dark bg-info">
       <router-link :to="{name:'Main'}">
         <span class="navbar-brand">
-          <img src="../assets/logo.png" height="30" class="d-inline-block align-top" alt /> App Quizz Theme
+          <h1>
+            <img src="../assets/logo.png" height="47" class="d-inline-block align-top" alt /> App Quizz Theme
+          </h1>
         </span>
       </router-link>
 

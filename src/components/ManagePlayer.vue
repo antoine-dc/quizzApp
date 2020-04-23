@@ -113,7 +113,13 @@ export default {
     save() {
       this.player.namePlayer = this.name;
       this.player.color = this.newColor;
-      this.player.theme = this.newTheme;
+
+      console.log(this.newTheme);
+
+      if (this.newTheme !== undefined) {
+        this.player.theme = this.newTheme;
+      }
+
       const parsed = JSON.stringify(this.datas);
       localStorage.setItem("datas", parsed);
     }

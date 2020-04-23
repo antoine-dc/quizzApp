@@ -162,7 +162,7 @@ import Color from "../class/Color.js";
 // Gestion du thème qui sera Culture Général !!
 
 export default {
-  name: "Admin",
+  name: "Dashboard",
   data() {
     return {
       datas: [],
@@ -180,6 +180,8 @@ export default {
       } catch (e) {
         localStorage.removeItem("datas");
       }
+
+      console.log(this.datas);
     } else {
       // EN DEV
       // this.datas = this.$parent.datas;

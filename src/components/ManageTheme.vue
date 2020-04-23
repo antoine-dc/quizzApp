@@ -20,9 +20,24 @@
       </div>
       <form>
         <div class="form-group row">
-          <label for="name" class="col-sm-2 col-form-label">Nom du thème</label>
-          <div class="col-sm-10">
+          <label for="name" class="col-sm-4 col-form-label">Nom du thème</label>
+          <div class="col-sm-6">
             <input v-model="name" type="text" class="form-control" id="name" />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="name" class="col-sm-4 col-form-label">Thème Culture Général</label>
+          <div class="col-sm-8">
+            <div class="custom-control custom-switch">
+              <input
+                type="checkbox"
+                class="custom-control-input"
+                id="customSwitch1"
+                :checked="this.theme.isThemeGeneralCulture"
+                @click="theme.isThemeGeneralCulture=!theme.isThemeGeneralCulture"
+              />
+              <label class="custom-control-label" for="customSwitch1"></label>
+            </div>
           </div>
         </div>
       </form>
@@ -146,10 +161,8 @@ export default {
       if (!this.newLabel || !this.newAnswer) {
         return;
       }
-      console.log(this.theme.questions);
 
       this.theme.questions.push(new Question(this.newLabel, this.newAnswer));
-      console.log(this.theme.questions);
       this.newLabel = "";
       this.newAnswer = "";
       this.save();
@@ -158,6 +171,7 @@ export default {
       this.theme.questions = this.theme.questions.filter(i => i !== question);
       this.save();
     },
+
     edit(question, type) {
       if (type === "question") {
         this.editingQuestion = question;
@@ -177,7 +191,10 @@ export default {
       this.theme.name = this.name;
       this.datas.themes[this.id] = this.theme;
 
-      // Boucle pour mettre à jour le thème d'un joueur si le thème a déjà été sélectionné
+      console.log(this.theme);
+
+      // Boucle pour mettre à jour le thème d'un joueur
+      // si le thème a déjà été sélectionné
       for (const player of this.datas.players) {
         if (player.theme.id === this.theme.id) {
           player.theme = this.theme;

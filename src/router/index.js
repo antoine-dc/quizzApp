@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Main from '@/components/Main2';
+import Main from '@/components/Main';
 import Admin from '@/components/Admin';
 import ManageTheme from '@/components/ManageTheme';
 import ManagePlayer from '@/components/ManagePlayer';
@@ -18,7 +18,7 @@ export default new Router({
     path: '*' /*Si tu rencontres n'importe quoi */ ,
     redirect: '/' /* tu seras alors redirigé vers la page d'accueil */
   }, {
-    path: '/admin',
+    path: '/dashboard',
     name: 'Admin',
     component: Admin
   }, {
